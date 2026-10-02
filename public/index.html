@@ -219,6 +219,26 @@ table.t tr:last-child td{border-bottom:0}
 .price small{font-size:14px;color:var(--muted);font-weight:500}
 .bnav{display:none}
 .sidebg{display:none}
+
+.hero2{position:relative;overflow:hidden;padding:72px 24px 88px;text-align:center}
+.hero2::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 55% at 50% 0%,color-mix(in srgb,var(--v2) 18%,transparent),transparent 70%),linear-gradient(var(--line) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/72px 72px;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.hero2-in{max-width:960px;margin:0 auto;position:relative}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 8px 6px 14px;font-size:13.5px;color:var(--ink2);box-shadow:var(--sh)}
+.hbadge b{background:var(--greenbg);color:var(--green);font-size:11px;padding:3px 8px;border-radius:999px;letter-spacing:.04em}
+.hero2 h1{font-size:clamp(36px,5.6vw,68px);line-height:1.02;letter-spacing:-.045em;font-weight:800;margin:26px 0 0}
+.grad{background:linear-gradient(90deg,var(--ink) 0%,#5B2BE0 45%,var(--v2) 70%,var(--ink) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero2 .lead{font-size:clamp(16px,1.6vw,19px);color:var(--ink2);margin:22px auto 34px;max-width:58ch}
+.sbar{display:flex;align-items:center;gap:10px;max-width:640px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:8px 8px 8px 20px;box-shadow:0 24px 50px -28px rgba(43,24,120,.35)}
+.sbar:focus-within{border-color:var(--v2);box-shadow:0 0 0 4px var(--soft),0 24px 50px -28px rgba(43,24,120,.35)}
+.sbar .at{font-size:20px;color:var(--muted);font-weight:600}
+.sbar input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:17px;padding:10px 0}
+.sbar .btn{border-radius:14px}
+.trychips{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-top:18px}
+.trust{margin-top:26px;font-weight:600;color:var(--ink2)}
+.trust span{color:var(--muted);margin:0 8px}
+.fine{font-size:12.5px;color:var(--muted);margin:8px auto 0;max-width:60ch}
+@media (max-width:960px){.hero2{padding:44px 16px 60px}.sect .wrap[style*="grid-template-columns"]{grid-template-columns:1fr!important}}
+@media (max-width:520px){.sbar{flex-wrap:wrap;padding:8px}.sbar input{padding:10px 4px}.sbar .btn{width:100%}}
 /* landing */
 .lp{background:var(--card)}
 .lp-nav{display:flex;align-items:center;gap:22px;max-width:1180px;margin:0 auto;padding:18px 24px}
@@ -333,7 +353,7 @@ const dshort=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
 const avg=(a,f)=>a.length?a.reduce((s,x)=>s+f(x),0)/a.length:0;
 const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
 function rng(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return(h>>>0)/4294967296}}
-function toast(msg){const t=document.getElementById("toast");t.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;clearTimeout(toast._t);toast._t=setTimeout(()=>t.innerHTML="",2800)}
+function toast(msg){const t=document.getElementById("toast");t.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;clearTimeout(toast._t);toast._t=setTimeout(()=>t.innerHTML="",Math.max(2800,String(msg).length*70))}
 const P_NAME={instagram:"Instagram",youtube:"YouTube",all:"All accounts"};
 
 /* ================= icons ================= */
@@ -793,17 +813,51 @@ function Admin(){const k=[["Total users",18420,"users"],["Free users",16380,"use
   <div class="grid g21">${Card("New sign-ups",lineChart([s],{h:220}),'<span class="sub">Last 30 days</span>')}${Card("Plan mix",donut([["Free",89],["Pro monthly",7],["Pro yearly",4]]))}</div>
   ${Card("Recent API errors",`<div class="scroll-x"><table class="t"><thead><tr><th>Platform</th><th>Error</th><th>Account</th><th>Handled by</th></tr></thead><tbody>${errs.map(e=>`<tr><td>${pIcon(e[0],20)}</td><td><code>${e[1]}</code></td><td>${e[2]}</td><td>${e[3]}</td></tr>`).join("")}</tbody></table></div>`)}</div>`}
 
+
+/* ================= public username lookup (/api/lookup → Instagram Business Discovery) ================= */
+const LOOK={};
+function LookupBox(compact){return`<div class="lkbox" style="display:flex;gap:8px;flex-wrap:wrap;${compact?"":"margin-top:22px;max-width:460px"}"><div style="position:relative;flex:1;min-width:200px"><span class="muted" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">@</span><input id="lk" class="input" style="padding-left:28px" placeholder="instagram username" maxlength="31" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Instagram username"></div><button class="btn btn-p" data-act="lookup">Check account</button></div>${compact?"":'<p class="note" style="margin-top:8px">Free, no login. Works for public Business and Creator accounts.</p>'}`}
+function Lookup(u){u=String(u||"").toLowerCase();const st=LOOK[u];
+  const wrap=b=>`<div class="lp">${LNav()}<div class="wrap" style="padding:36px 24px 80px"><div class="ph"><div><h1>Instagram account check</h1><p>Public profile data, no login needed.</p></div><div style="min-width:min(100%,380px)">${LookupBox(true)}</div></div>${b}</div>${Footer()}</div>`;
+  if(!/^[a-z0-9._]{1,30}$/.test(u))return wrap(`<div class="card">${Empty("users","Enter a username","Type an Instagram username above.")}</div>`);
+  if(!st){LOOK[u]={loading:true};api("/api/lookup?username="+encodeURIComponent(u)).then(d=>{LOOK[u]={data:d}}).catch(e=>{LOOK[u]={err:e}}).finally(()=>{if(location.hash.startsWith("#/lookup/"+u))rerender()});return wrap(`<div class="card">${Loading("Looking up @"+esc(u)+"…")}</div>`)}
+  if(st.loading)return wrap(`<div class="card">${Loading("Looking up @"+esc(u)+"…")}</div>`);
+  if(st.err){const e=st.err;const msg=e.code==="NOT_CONFIGURED"?"Username lookup isn’t switched on yet. The site owner needs to add the lookup token.":e.message&&!/Failed to fetch|HTTP_/.test(e.message)?e.message:"Couldn’t reach the lookup service. Try again in a moment.";
+    return wrap(`<div class="card">${Empty("alert","Couldn’t check @"+esc(u),esc(msg),`<button class="btn" style="margin-top:14px" data-act="relookup" data-v="${esc(u)}">Try again</button>`)}</div>`)}
+  const d=st.data;const m=d.media||[];const withL=m.filter(x=>x.likes!=null);const aL=withL.length?avg(withL,x=>x.likes):null,aC=m.length?avg(m,x=>x.comments||0):null;
+  const er=d.followers&&aL!=null?(aL+(aC||0))/d.followers*100:null;
+  const days=m.length>1?(new Date(m[0].timestamp)-new Date(m[m.length-1].timestamp))/864e5:null;const perWeek=days?(m.length-1)/days*7:null;
+  const reelShare=m.length?m.filter(x=>x.type==="reel").length/m.length*100:null;
+  const stat=(l,v,sub)=>`<div class="card" style="padding:16px"><div class="muted" style="font-size:12.5px">${l}</div><div style="font-size:22px;font-weight:700;letter-spacing:-.02em">${v}</div>${sub?`<div class="muted" style="font-size:11.5px">${sub}</div>`:""}</div>`;
+  const pic=d.picture?`<img src="${esc(d.picture)}" alt="" width="84" height="84" style="border-radius:50%;object-fit:cover;flex:none" referrerpolicy="no-referrer">`:`<span class="avatar" style="width:84px;height:84px;font-size:30px">${esc((d.username||"?")[0].toUpperCase())}</span>`;
+  const top=[...m].sort((a,b)=>((b.likes||0)+(b.comments||0))-((a.likes||0)+(a.comments||0)));
+  return wrap(`<div class="card" style="margin-bottom:18px"><div class="acc" style="gap:20px">${pic}<div class="meta"><h2 style="font-size:22px">${esc(d.name||d.username)}</h2><a href="https://instagram.com/${esc(d.username)}" target="_blank" rel="noopener" class="muted">@${esc(d.username)}</a>${d.biography?`<p style="margin-top:8px;white-space:pre-line;max-width:60ch">${esc(d.biography)}</p>`:""}</div></div></div>
+  <div class="grid g4">${stat("Followers",fmt(d.followers))}${stat("Following",fmt(d.following))}${stat("Posts",fmt(d.posts))}${stat("Engagement rate",pct(er),"Avg likes + comments ÷ followers")}</div>
+  <div class="grid g4">${stat("Avg likes",fmt(aL),withL.length<m.length?`${m.length-withL.length} posts hide likes`:`Last ${m.length} posts`)}${stat("Avg comments",fmt(aC),`Last ${m.length} posts`)}${stat("Posts per week",perWeek==null?"—":perWeek.toFixed(1),"Based on recent posts")}${stat("Reels share",reelShare==null?"—":Math.round(reelShare)+"%","Of recent posts")}</div>
+  ${Card("Recent posts, best first",top.length?top.map(c=>`<div class="citem">${Thumb({id:c.id,type:c.type,thumb:c.thumb})}<div class="ct"><h5><a href="${esc(c.permalink)}" target="_blank" rel="noopener" style="color:inherit">${esc(c.title)}</a></h5><div class="date">${dfmt(new Date(c.timestamp))} · ${c.type==="reel"?"Reel":"Post"}</div><div class="stats"><span>${I("heart",13)}${fmt(c.likes)}</span><span>${I("comment",13)}${fmt(c.comments)}</span></div></div></div>`).join(""):Empty("grid","No public posts","This account hasn’t published anything yet."),`<span class="sub">Public data via Instagram · refreshed every 30 min</span>`)}
+  <div class="card" style="margin-top:18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--soft)"><div style="flex:1;min-width:220px"><b>Is this your account?</b><p class="muted">Connect it to see reach, views, audience, best time to post and AI recommendations.</p></div><a class="btn btn-p" href="#/signup">Connect for free</a></div>`)}
+
 /* ================= public pages ================= */
 const ARTICLES=[{slug:"instagram-engagement-rate",title:"How to calculate your Instagram engagement rate (and what’s good in 2026)",date:"2026-09-18",tag:"Instagram analytics",read:6,ex:"Engagement rate is the one number most creators quote and few calculate the same way. Here’s a consistent method.",body:["There are two common formulas: interactions divided by followers, and interactions divided by reach. The second is fairer for accounts with many inactive followers, because it only counts people who actually saw the post.","Interactions should include likes, comments, shares and saves. Saves and shares carry more intent than likes, so it’s worth tracking them separately too.","A useful habit is to compare each post with your own 90-day average rather than with other accounts. Your audience, niche and format mix make outside benchmarks rough at best."]},
 {slug:"youtube-analytics-for-small-channels",title:"YouTube analytics for small channels: the 4 numbers to watch",date:"2026-09-02",tag:"YouTube analytics",read:5,ex:"Views aren’t the whole story. Watch time, average view duration, click-through rate and returning viewers tell you more.",body:["Watch time is how long people spend on your videos in total. It reflects both how many people click and how long they stay.","Average view duration shows whether your video keeps its promise. A sharp drop in the first 30 seconds usually points to the intro, not the topic.","Shorts and long-form behave differently. Compare them separately so one doesn’t hide problems in the other."]},
 {slug:"competitor-analysis-for-creators",title:"Competitor analysis for creators, without copying anyone",date:"2026-08-21",tag:"Creator growth",read:7,ex:"Looking at similar accounts can show you formats and topics to test. Here’s how to do it using public data only.",body:["Pick two accounts slightly ahead of you in your niche, not the biggest names. Their audience is closest to the one you’re building.","Compare posting frequency, formats and which public posts outperform their own average. You’re looking for patterns, not posts to copy.","Turn each pattern into one test for your own account, and give it at least three posts before judging it."]}];
-function LNav(){return`<header class="lp-nav"><a class="brand" href="#/">${LOGO}Nexlytics</a><nav class="links"><a href="#/" data-scroll="features">Features</a><a href="#/" data-scroll="pricing">Pricing</a><a href="#/blog">Blog</a><a href="#/" data-scroll="faq">FAQ</a></nav><span style="flex:1"></span>${S.authed?'<a class="btn" href="#/app/dashboard">Open dashboard</a>':'<a class="btn btn-ghost hide-m" href="#/login">Sign in</a><a class="btn btn-p" href="#/signup">Start free</a>'}</header>`}
+function LNav(){return`<header class="lp-nav"><a class="brand" href="#/">${LOGO}Nexlytics</a><nav class="links"><a href="#/" data-scroll="features">Features</a><a href="#/" data-scroll="pricing">Pricing</a><a href="#/lookup/">Free account check</a><a href="#/blog">Blog</a><a href="#/" data-scroll="faq">FAQ</a></nav><span style="flex:1"></span>${S.authed?'<a class="btn" href="#/app/dashboard">Open dashboard</a>':'<a class="btn btn-ghost hide-m" href="#/login">Sign in</a><a class="btn btn-p" href="#/signup">Start free</a>'}</header>`}
 function Footer(){return`<footer class="foot"><div class="wrap"><div class="cols"><div><div class="brand" style="padding:0 0 10px">${LOGO}Nexlytics</div><p style="font-size:13px;max-width:34ch">Instagram and YouTube analytics with AI insights, for creators and small businesses across the UK and Europe.</p></div><div><h5>Product</h5><a href="#/" data-scroll="features">Features</a><a href="#/" data-scroll="pricing">Pricing</a><a href="#" data-act="demo">Live demo</a></div><div><h5>Resources</h5><a href="#/blog">Blog</a>${ARTICLES.slice(0,2).map(a=>`<a href="#/blog/${a.slug}">${a.tag}</a>`).join("")}</div><div><h5>Company</h5><a href="#/">Privacy policy</a><a href="#/">Terms</a><a href="#/">GDPR & data</a></div></div><p style="font-size:12px;margin-top:32px;opacity:.7">© 2026 Nexlytics. Instagram and YouTube are trademarks of their respective owners. Nexlytics is not affiliated with Meta or Google.</p></div></footer>`}
 function heroInsight(){const ig=asDemo(()=>DataService.content("instagram"));const r=ig.filter(c=>c.type==="reel"),po=ig.filter(c=>c.type==="post");return{t:`Reels get ${(avg(r,c=>c.views)/avg(po,c=>c.views)).toFixed(1)}× more views than static posts on this account.`,b:`${r.length} Reels vs ${po.length} posts`,i:"spark",tone:"t-violet"}}
 function Landing(){const m=DataService.metrics("instagram",28);
   const feats=[["ig","Instagram analytics","Followers, reach, engagement and Reels views, with every post ranked."],["yt","YouTube analytics","Subscribers, views, watch time and how Shorts compare with long-form."],["spark","AI Coach","Plain-language advice on what’s working, built only from your numbers."],["pen","Caption AI","Score a caption, then get a stronger hook, CTA and hashtags."],["target","Competitor analysis","Compare growth and formats with 2 public accounts in your niche."],["file","Reports","PDF and CSV reports for clients, brands or your own records."]];
   return`<div class="lp">${LNav()}
-  <section class="hero wrap"><div><h1>Understand your social media. Grow with data.</h1><p class="lead">One dashboard for Instagram and YouTube analytics, AI-powered insights, and creator growth.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-p btn-lg" href="#/signup">Start free</a><button class="btn btn-lg" data-act="demo">${I("play",16)} View demo</button></div><p class="note">Free forever plan. No card needed. Connect with official Instagram and Google sign-in.</p></div>
+  <section class="hero2"><div class="hero2-in">
+   <span class="hbadge">${I("trend",15)} Public profile analytics <b>FREE</b></span>
+   <h1>Understand any public<br><span class="grad">Instagram profile</span></h1>
+   <p class="lead">Type a username and get followers, engagement, posting rhythm and top posts in seconds. Connect your own account for reach, audience and AI coaching.</p>
+   <div class="sbar"><span class="at">@</span><input id="lk" placeholder="Enter Instagram username" maxlength="31" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Instagram username"><button class="btn btn-p btn-lg" data-act="lookup">Analyze ${I("arrow",16)}</button></div>
+   <div class="trychips"><span class="muted">Try</span>${["natgeo","nike","nasa","bbcnews"].map(u=>`<button class="chip" data-act="trylookup" data-v="${u}">@${u}</button>`).join("")}</div>
+   <p class="trust">Public Business &amp; Creator profiles <span>•</span> No Instagram login required</p>
+   <p class="fine">Data comes only from Instagram’s official API. Engagement and posting rate are calculated from recent public posts.</p>
+  </div></section>
+  <section class="sect"><div class="wrap" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center" class="two">
+   <div><h2>Your own account? See everything.</h2><p class="intro">Connect Instagram or YouTube with official sign-in to unlock reach, views, audience, best time to post and AI recommendations built only from your numbers.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-p btn-lg" href="#/signup">Start free</a><button class="btn btn-lg" data-act="demo">${I("play",16)} View demo</button></div></div>
    <div class="stage" aria-label="Product preview"><div class="grid g2" style="margin-bottom:14px">${m.slice(0,2).map(x=>MetricCard(x,"instagram")).join("")}</div><div class="card">${lineChart(["followers","reach"].map(k=>DataService.series("instagram",k,28)),{h:150})}</div>
    <div class="float card">${Insight(heroInsight()).replace('class="ins"','class="ins" style="border:0;padding:0;margin:0"')}</div></div></section>
   <section class="sect"><div class="wrap"><h2>From connected to clear in four steps</h2><p class="intro">Sign in with Instagram or Google. Nexlytics reads your analytics through the official APIs and never posts for you.</p>
@@ -845,6 +899,7 @@ function oauthModal(p){const ig=p==="instagram";openModal(`<button class="x" dat
 function render(){CH={};chN=0;validPlatform();const hh=(location.hash||"#/").slice(1);const [h,hq]=hh.split("?");if(hq)handleHashQuery(hq,h);const parts=h.split("/").filter(Boolean);const root=document.getElementById("root");let html="",title="Nexlytics";
   if(!parts.length){html=asDemo(Landing)}
   else if(parts[0]==="blog"){html=Blog(parts[1]);title=parts[1]?(ARTICLES.find(a=>a.slug===parts[1])||{}).title||"Blog":"Blog"}
+  else if(parts[0]==="lookup"){html=Lookup(parts[1]);title=parts[1]?"@"+parts[1]+" Instagram stats":"Instagram account check"}
   else if(parts[0]==="signup"||parts[0]==="login"){html=Auth(parts[0]);title=parts[0]==="signup"?"Create account":"Sign in"}
   else if(parts[0]==="onboarding"){if(!S.authed){location.hash="#/signup";return}html=Onboarding();title="Connect accounts"}
   else if(parts[0]==="admin"){html=Admin();title="Admin"}
@@ -865,7 +920,7 @@ window.addEventListener("hashchange",()=>{ui.dd=null;ui.sideOpen=false;if(locati
 /* ================= actions ================= */
 function rerender(){const y=window.scrollY;render();window.scrollTo(0,y)}
 document.addEventListener("change",e=>{const t=e.target;if(t.dataset.actChange==="substatus"){S.subStatus=t.value;save();toast("Subscription state: "+t.value.replace("_"," "));rerender()}});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(document.getElementById("modal").innerHTML)closeModal();else if(ui.dd){ui.dd=null;rerender()}}});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target&&e.target.id==="lk"){e.preventDefault();const b=document.querySelector('[data-act="lookup"]');b&&b.click();return}if(e.key==="Escape"){if(document.getElementById("modal").innerHTML)closeModal();else if(ui.dd){ui.dd=null;rerender()}}});
 document.addEventListener("click",e=>{
   const sc=e.target.closest("[data-scroll]");if(sc){e.preventDefault();const go=()=>{const el=document.getElementById(sc.dataset.scroll);el&&el.scrollIntoView({behavior:"smooth"})};if(location.hash.length>2){location.hash="#/";setTimeout(go,50)}else go();return}
   const t=e.target.closest("[data-act]");
@@ -899,6 +954,9 @@ document.addEventListener("click",e=>{
       S.connected[v]=false;save();closeModal();toast(P_NAME[v]+" disconnected.");if(!S.connected.instagram&&!S.connected.youtube)location.hash="#/onboarding";else rerender();break;
     case"reconnect":if(v==="instagram"&&LIVE.configured&&!S.demoMode){location.href="/api/oauth/instagram/start";break}oauthModal(v);break;
     case"retry":LIVE.err=null;rerender();break;
+    case"lookup":{const el=document.getElementById("lk");const u=(el&&el.value||"").trim().replace(/^@/,"").toLowerCase();if(!/^[a-z0-9._]{1,30}$/.test(u)){toast("Enter a valid Instagram username.");break}location.hash="#/lookup/"+u;break}
+    case"trylookup":location.hash="#/lookup/"+v;break;
+    case"relookup":delete LOOK[v];rerender();break;
     case"exitdemo":S.demoMode=false;S.connected={instagram:S.liveIG,youtube:false};resetLive();save();location.hash=S.liveIG?"#/app/dashboard":"#/onboarding";if(location.hash===lastHash)rerender();break;
     case"ctab":ui[t.dataset.k]=v;rerender();break;
     case"cplat":ui.cPlat=v;if(t.tagName==="BUTTON")rerender();break;
