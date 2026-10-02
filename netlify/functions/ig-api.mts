@@ -1,16 +1,21 @@
 import type { Config } from "@netlify/functions";
 import {
-  cfg, json, setCookie, loadSession, ensureFresh, graph, GraphError, cached, tokenStore, cacheStore, type Session,
+  cfg, json, setCookie, loadSession, saveSession, ensureFresh, graph, GraphError, cached, tokenStore, cacheStore, type Session,
 } from "../lib/ig.mts";
 
 const DAY = 864e5;
 const RANGES = [7, 28, 90, 180, 365];
 const TOTAL_METRICS = ["reach", "views", "total_interactions"];
 
+// The user_id returned by the OAuth token exchange is app-scoped and can't be used for
+// /insights or /media. The professional account ID comes from GET /me?fields=user_id.
 async function accountId(s: Session, token: string) {
-  if (s.userId) return s.userId;
+  if (s.igAccountId) return s.igAccountId;
   const me = await graph("/me", token, { fields: "user_id" });
-  return String(me.user_id || me.id);
+  const id = String(me.user_id || me.id);
+  s.igAccountId = id;
+  try { await saveSession(s); } catch {}
+  return id;
 }
 
 // ---- account totals over a window, split into <=30 day chunks (API limit) ----
