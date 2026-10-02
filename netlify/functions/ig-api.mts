@@ -7,15 +7,33 @@ const DAY = 864e5;
 const RANGES = [7, 28, 90, 180, 365];
 const TOTAL_METRICS = ["reach", "views", "total_interactions"];
 
-// The user_id returned by the OAuth token exchange is app-scoped and can't be used for
-// /insights or /media. The professional account ID comes from GET /me?fields=user_id.
-async function accountId(s: Session, token: string) {
+// Resolve the Instagram professional account ID that this token can read.
+// graph.instagram.com/me is rejected for some tokens ("Unsupported request"), so we try
+// the cached ID, the numeric user_id from the token exchange, and /me — and keep the first that works.
+async function accountId(s: Session, token: string): Promise<string> {
   if (s.igAccountId) return s.igAccountId;
-  const me = await graph("/me", token, { fields: "user_id" });
-  const id = String(me.user_id || me.id);
-  s.igAccountId = id;
-  try { await saveSession(s); } catch {}
-  return id;
+  const candidates: string[] = [];
+  if (s.userId) candidates.push(s.userId);
+  try {
+    const me = await graph("/me", token, { fields: "user_id" });
+    if (me.user_id) candidates.push(String(me.user_id));
+    if (me.id) candidates.push(String(me.id));
+  } catch (e) {
+    if (e instanceof GraphError && (e.kind === "TOKEN_EXPIRED" || e.kind === "RATE_LIMITED")) throw e;
+  }
+  let last: unknown = null;
+  for (const id of [...new Set(candidates)]) {
+    try {
+      await graph(`/${id}`, token, { fields: "username" });
+      s.igAccountId = id;
+      try { await saveSession(s); } catch {}
+      return id;
+    } catch (e) {
+      if (e instanceof GraphError && (e.kind === "TOKEN_EXPIRED" || e.kind === "RATE_LIMITED")) throw e;
+      last = e;
+    }
+  }
+  throw last || new GraphError("API_ERROR", 502, "Couldn’t find the Instagram account for this login.");
 }
 
 // ---- account totals over a window, split into <=30 day chunks (API limit) ----
@@ -188,6 +206,13 @@ export default async (req: Request) => {
       permissions: s.permissions ?? null,
       versioned: { base: graphBase(), ...(await probe(graphBase())) },
       unversioned: await probe("https://graph.instagram.com"),
+      tokenUserIdLast4: (s.userId || "").slice(-4) || null,
+      byUserId: s.userId ? await (async () => {
+        try {
+          const { r, j } = await rawGraph(graphBase(), `/${s.userId}`, t, { fields: "user_id,username,account_type" });
+          return { status: r.status, ok: r.ok && !j.error, username: j.username ?? null, accountType: j.account_type ?? null, error: j.error ? { code: j.error.code, message: j.error.message } : null };
+        } catch (e: any) { return { error: String(e?.message || e) }; }
+      })() : null,
     });
   }
 
@@ -208,8 +233,10 @@ export default async (req: Request) => {
     const token = await ensureFresh(s);
     switch (resource) {
       case "profile": {
-        const data = await cached(`${s.sid}:profile`, 15 * 60e3, () =>
-          graph("/me", token, { fields: "user_id,username,name,account_type,profile_picture_url,followers_count,follows_count,media_count" }));
+        const data = await cached(`${s.sid}:profile`, 15 * 60e3, async () => {
+          const id = await accountId(s, token);
+          return graph(`/${id}`, token, { fields: "user_id,username,name,account_type,profile_picture_url,followers_count,follows_count,media_count" });
+        });
         return json(data);
       }
       case "media":
