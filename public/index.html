@@ -912,6 +912,7 @@ function render(){CH={};chN=0;validPlatform();const hh=(location.hash||"#/").sli
 }
 function handleHashQuery(q,path){const p=new URLSearchParams(q);const err=p.get("ig_error");
   if(p.get("ig")==="connected")setTimeout(()=>toast("Instagram connected. Loading your data…"),50);
+  if(p.get("ig")==="connected_short")setTimeout(()=>toast("Instagram connected for about 1 hour. Instagram didn’t issue a 60-day token, so you’ll be asked to reconnect later."),50);
   if(err){const M={not_configured:"Instagram isn’t configured on the server yet.",access_denied:"Instagram access was cancelled.",user_denied:"Instagram access was cancelled.",state_mismatch:"Sign-in expired. Try connecting again.",token_exchange:"Instagram didn’t accept the sign-in. Check the app ID, secret and redirect URI.",missing_code:"Instagram didn’t return a sign-in code. Try again."};setTimeout(()=>toast(M[err]||("Couldn’t connect Instagram ("+err+").")),50)}
   try{history.replaceState(null,"","#"+path)}catch(e){}lastHash="#"+path}
 let lastHash=location.hash;
