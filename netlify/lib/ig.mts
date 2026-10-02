@@ -88,6 +88,10 @@ export async function loadSession(req: Request): Promise<Session | null> {
 export async function saveSession(s: Session) {
   const { sid, ...rest } = s;
   await tokenStore().set(sid, encrypt(rest));
+  // index by Instagram user id so Meta deauthorize / data-deletion callbacks can find the session
+  for (const uid of [s.userId, s.igAccountId]) {
+    if (uid) { try { await tokenStore().set(`uid:${uid}`, sid); } catch {} }
+  }
 }
 
 // ---------- Graph API ----------
