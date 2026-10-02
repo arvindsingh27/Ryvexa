@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexlytics — Instagram & YouTube analytics with AI insights</title>
+<meta name="description" content="One dashboard for Instagram and YouTube analytics, AI-powered insights, competitor analysis and creator growth. Built for creators and small businesses across the UK and Europe.">
+<meta name="keywords" content="Instagram analytics, Instagram analytics dashboard, YouTube analytics dashboard, social media analytics, creator analytics, Instagram competitor analysis, AI social media analytics">
+<link rel="canonical" href="https://nexlytics.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nexlytics — Understand your social media. Grow with data.">
+<meta property="og:description" content="Instagram and YouTube analytics, AI coaching and competitor analysis in one dashboard.">
+<meta property="og:url" content="https://nexlytics.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nexlytics — Instagram & YouTube analytics">
+<meta name="twitter:description" content="AI-powered analytics for creators and small businesses.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Nexlytics","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":[{"@type":"Offer","price":"0","priceCurrency":"GBP","name":"Free"},{"@type":"Offer","price":"12","priceCurrency":"GBP","name":"Pro Monthly"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#F5F5F9;--card:#FFFFFF;--ink:#16142A;--ink2:#3D3A55;--muted:#75728A;--line:#E8E7F0;--soft:#F1EDFE;--soft2:#F7F6FB;
+--v:#6A3DF0;--v2:#8B66FF;--vink:#4B23C9;--green:#0E9A66;--greenbg:#E5F6EE;--red:#D43F58;--redbg:#FCEBEE;--amber:#E08A12;--amberbg:#FDF3E3;
+--side:#15132B;--side2:#221F3F;--sideink:#B4B1CF;--blue:#3B82F6;--pink:#E1306C;--pinkbg:#FDE8F0;--yt:#E52D27;
+--sh:0 1px 2px rgba(22,20,42,.04),0 10px 28px -16px rgba(22,20,42,.14);
+--font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E0D1A;--card:#18162C;--ink:#F2F1FA;--ink2:#D0CEE4;--muted:#9693B0;--line:#2A2744;--soft:#251F49;--soft2:#1E1B35;--side:#0A0914;--side2:#1D1A36;--greenbg:#0F3527;--redbg:#3A1520;--pinkbg:#3A1427;--amberbg:#382711;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px -16px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#0E0D1A;--card:#18162C;--ink:#F2F1FA;--ink2:#D0CEE4;--muted:#9693B0;--line:#2A2744;--soft:#251F49;--soft2:#1E1B35;--side:#0A0914;--side2:#1D1A36;--greenbg:#0F3527;--redbg:#3A1520;--pinkbg:#3A1427;--amberbg:#382711}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--v);text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--v2);outline-offset:2px;border-radius:6px}
+h1,h2,h3,h4{margin:0;letter-spacing:-.015em}
+p{margin:0}
+.ic{flex:none;display:inline-block;vertical-align:middle}
+.muted{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 14px;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{border-color:#cfcbe3}
+.btn-p{background:var(--v);border-color:var(--v);color:#fff}
+.btn-p:hover{background:var(--vink);border-color:var(--vink)}
+.btn-sm{padding:6px 11px;font-size:12.5px;border-radius:8px}
+.btn-lg{padding:13px 20px;font-size:15px;border-radius:12px}
+.btn-ghost{background:transparent;border-color:transparent}
+.btn-danger{color:var(--red)}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600}
+.up{color:var(--green)} .down{color:var(--red)}
+.pill.up{background:var(--greenbg)} .pill.down{background:var(--redbg)}
+.tag-pro{background:var(--soft);color:var(--v);font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;letter-spacing:.02em}
+.input{width:100%;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;outline:none}
+.input:focus{border-color:var(--v2);box-shadow:0 0 0 3px var(--soft)}
+label.f{display:block;font-weight:600;font-size:13px;margin:0 0 6px}
+/* app shell */
+.app{display:grid;grid-template-columns:244px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;background:var(--side);color:var(--sideink);display:flex;flex-direction:column;padding:22px 14px 16px;overflow-y:auto;z-index:40}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:21px;letter-spacing:-.03em;padding:0 8px 22px}
+.brand .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,#8B66FF,#5B2BE0);display:grid;place-items:center}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--sideink);font-weight:500;margin-bottom:2px}
+.nav a:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav a.on{background:var(--side2);color:#fff}
+.nav a .lk{margin-left:auto;opacity:.7}
+.upcard{margin-top:auto;border:1px solid rgba(139,102,255,.35);background:linear-gradient(170deg,#241E52,#191637);border-radius:16px;padding:16px;color:#E6E3F7}
+.upcard h4{color:#fff;font-size:15px;display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.upcard ul{list-style:none;padding:0;margin:10px 0 14px;font-size:12.5px}
+.upcard li{display:flex;gap:8px;align-items:center;margin:5px 0}
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:12px 28px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .sp{flex:1}
+.main{padding:22px 28px 60px;max-width:1440px;width:100%}
+.demobar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;background:var(--soft);border:1px dashed color-mix(in srgb,var(--v) 40%,transparent);color:var(--ink2);border-radius:12px;padding:9px 14px;margin-bottom:20px;font-size:12.5px}
+.demobar b{color:var(--v)}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:2px}
+.seg button{border:0;background:transparent;padding:5px 11px;border-radius:7px;font-weight:600;font-size:12.5px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--v);color:#fff}
+.dd{position:relative}
+.ddm{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px -16px rgba(22,20,42,.3);padding:6px;z-index:50}
+.ddm.r{left:auto;right:0}
+.ddm button,.ddm a{display:flex;width:100%;align-items:center;gap:10px;border:0;background:transparent;padding:9px 10px;border-radius:8px;cursor:pointer;text-align:left;color:var(--ink);font-weight:500}
+.ddm button:hover,.ddm a:hover{background:var(--soft2)}
+.ddm .sel{background:var(--soft);color:var(--v)}
+.ddm hr{border:0;border-top:1px solid var(--line);margin:6px 0}
+.pbtn{min-width:170px;justify-content:flex-start}
+.pbtn .cv{margin-left:auto}
+.picon{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:#fff;flex:none}
+.picon.ig{background:linear-gradient(135deg,#F9A23A,#E1306C 55%,#7A3BD9)}
+.picon.yt{background:var(--yt)}
+.picon.all{background:var(--v)}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8B66FF,#E1306C);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.iconbtn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;position:relative}
+.dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.menu-t{display:none}
+/* page */
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.ph h1{font-size:26px;font-weight:700}
+.ph p{color:var(--muted);margin-top:4px}
+.grid{display:grid;gap:18px;margin-bottom:18px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g21{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}
+.g12{grid-template-columns:minmax(0,1fr) minmax(0,1.55fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:20px;min-width:0}
+.card-h{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
+.card-h h3{font-size:16px;font-weight:700}
+.card-h .sub{color:var(--muted);font-size:12.5px;font-weight:500}
+/* metric */
+.metric{display:flex;gap:14px;align-items:flex-start;padding:18px}
+.mic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;flex:none}
+.t-pink{background:var(--pinkbg);color:var(--pink)} .t-green{background:var(--greenbg);color:var(--green)} .t-rose{background:var(--redbg);color:var(--red)} .t-amber{background:var(--amberbg);color:var(--amber)} .t-violet{background:var(--soft);color:var(--v)} .t-red{background:var(--redbg);color:var(--yt)}
+.metric .lab{color:var(--ink2);font-weight:500;font-size:13px}
+.metric .val{font-size:25px;font-weight:700;letter-spacing:-.02em;margin:2px 0;font-variant-numeric:tabular-nums}
+.metric .chg{white-space:nowrap;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:4px}
+.metric .chg span.muted{font-weight:500}
+.metric .spark{margin-left:auto;width:42%;max-width:130px;height:52px;align-self:center}
+.unav{font-size:12px;color:var(--muted);background:var(--soft2);border-radius:8px;padding:6px 8px;margin-top:4px}
+/* charts */
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-bottom:10px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.chart{position:relative;width:100%}
+.chart svg{width:100%;height:100%;display:block;overflow:visible}
+.ch-y{position:absolute;left:0;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;font-size:11px;color:var(--muted);pointer-events:none}
+.ch-x{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px}
+.ch-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--card);border-radius:8px;padding:7px 10px;font-size:12px;white-space:nowrap;opacity:0;transform:translate(-50%,-110%);z-index:5}
+.ch-tip div{display:flex;gap:6px;align-items:center}
+.ch-tip i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.ch-ln{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:0;pointer-events:none}
+.chart.padl{padding-left:42px}
+.bars .row{display:grid;grid-template-columns:96px 1fr 46px;gap:10px;align-items:center;margin:9px 0;font-size:13px}
+.bars .tr{height:9px;background:var(--soft2);border-radius:6px;overflow:hidden}
+.bars .fill{height:100%;background:var(--v);border-radius:6px}
+.heat{display:grid;grid-template-columns:44px repeat(7,1fr);gap:4px;font-size:10.5px;color:var(--muted)}
+.heat .c{height:22px;border-radius:5px;background:var(--v)}
+.heat .h{display:flex;align-items:center}
+.heat .d{text-align:center}
+.donut-wrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.donut-wrap svg{width:150px;height:150px;flex:none}
+.dleg{flex:1;min-width:140px;font-size:13px}
+.dleg div{display:flex;align-items:center;gap:8px;margin:7px 0}
+.dleg i{width:9px;height:9px;border-radius:3px}
+.dleg b{margin-left:auto;font-variant-numeric:tabular-nums}
+/* lock */
+.lockwrap{position:relative;overflow:hidden;border-radius:12px;min-height:200px}
+.blurred{filter:blur(5px);opacity:.55;pointer-events:none;user-select:none}
+.lockov{position:absolute;inset:0;display:grid;place-items:center;padding:12px}
+.lockbox{background:color-mix(in srgb,var(--card) 92%,transparent);border:1px solid var(--line);box-shadow:0 18px 40px -20px rgba(22,20,42,.35);border-radius:14px;padding:16px 18px;text-align:center;max-width:300px}
+.lockbox .lki{width:34px;height:34px;border-radius:50%;background:var(--soft);color:var(--v);display:grid;place-items:center;margin:0 auto 8px}
+.lockbox h4{font-size:14.5px;margin-bottom:4px}
+.lockbox.cmp{padding:12px 14px}.lockbox.cmp h4{font-size:13px;margin-bottom:10px}
+.lockbox p{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+/* content */
+.tabs{display:inline-flex;gap:4px;background:var(--soft2);padding:3px;border-radius:10px;border:1px solid var(--line)}
+.tabs button{border:0;background:transparent;padding:5px 11px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.tabs button.on{background:var(--card);color:var(--v);box-shadow:0 1px 3px rgba(22,20,42,.08)}
+.citem{display:flex;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.citem:first-child{border-top:0;padding-top:2px}
+.citem .ct{flex:1;min-width:0}
+.citem .ct h5{margin:0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.citem .date{color:var(--muted);font-size:12px}
+.stats{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink2);margin-top:5px}
+.stats span{display:inline-flex;align-items:center;gap:5px}
+.thumb{position:relative;width:76px;height:60px;border-radius:10px;overflow:hidden;flex:none;background:linear-gradient(170deg,var(--a),var(--b))}
+.thumb svg{position:absolute;inset:0;width:100%;height:100%}
+.thumb .tb{position:absolute;left:5px;bottom:5px;background:rgba(0,0,0,.45);color:#fff;border-radius:5px;padding:2px 4px;display:flex}
+.thumb.sm{width:52px;height:42px}
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t th.s{cursor:pointer}
+table.t th.s:hover{color:var(--v)}
+table.t td{padding:10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+table.t td.wrap{white-space:normal;min-width:200px}
+table.t tr:last-child td{border-bottom:0}
+.scroll-x{overflow-x:auto}
+/* premium row */
+.prem{display:flex;flex-direction:column;gap:10px}
+.prem .hd{display:flex;gap:10px;align-items:center}
+.prem .hd h4{font-size:14.5px}
+.prem>p.muted{min-height:40px}
+.mini-rows div{height:10px;border-radius:5px;background:var(--soft2);margin:8px 0}
+/* ai */
+.ins{display:flex;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:10px}
+.ins .ii{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none}
+.ins p{font-weight:500}
+.ins .basis{font-size:12px;color:var(--muted);margin-top:4px}
+.sec-t{font-size:15px;font-weight:700;margin:6px 0 10px;display:flex;align-items:center;gap:8px}
+.score{display:grid;grid-template-columns:130px 1fr 40px;gap:10px;align-items:center;margin:8px 0;font-size:13px}
+.box{background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:14px;white-space:pre-wrap;font-size:13.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.chip.on{background:var(--v);border-color:var(--v);color:#fff}
+.chip.static{cursor:default;font-weight:500}
+.idea dl{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin:10px 0 0;font-size:13px}
+.idea dt{color:var(--muted);font-weight:600}
+.idea dd{margin:0}
+/* modal */
+.mbg{position:fixed;inset:0;background:rgba(14,12,30,.5);display:grid;place-items:center;padding:20px;z-index:100;backdrop-filter:blur(3px)}
+.modal{background:var(--card);border-radius:20px;max-width:460px;width:100%;padding:26px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);max-height:calc(100% - 20px);overflow:auto;animation:pop .18s ease-out}
+.modal.wide{max-width:620px}
+@keyframes pop{from{transform:translateY(8px);opacity:0}}
+.modal h2{font-size:21px;margin-bottom:6px}
+.modal .x{float:right;border:0;background:transparent;cursor:pointer;color:var(--muted);padding:4px}
+.checks{list-style:none;padding:0;margin:16px 0 20px}
+.checks li{display:flex;gap:10px;align-items:center;margin:9px 0;font-weight:500}
+.checks .ck{width:22px;height:22px;border-radius:50%;background:var(--greenbg);color:var(--green);display:grid;place-items:center;flex:none}
+.spin{animation:spin 1.1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--card);padding:11px 16px;border-radius:12px;font-weight:600;font-size:13.5px;z-index:200;box-shadow:0 10px 30px -10px rgba(0,0,0,.4);max-width:90vw}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty .ei{width:48px;height:48px;border-radius:14px;background:var(--soft);color:var(--v);display:grid;place-items:center;margin:0 auto 12px}
+.empty h4{color:var(--ink);font-size:15px;margin-bottom:4px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}
+.b-free{background:var(--soft2);color:var(--ink2);border:1px solid var(--line)} .b-trial{background:var(--soft);color:var(--v)} .b-active{background:var(--greenbg);color:var(--green)} .b-past_due{background:var(--amberbg);color:var(--amber)} .b-cancelled{background:var(--redbg);color:var(--red)}
+.acc{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.acc .meta{flex:1;min-width:160px}
+.stat-ok{color:var(--green);font-weight:600;font-size:12.5px;display:inline-flex;align-items:center;gap:5px}
+.stat-ok::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green)}
+.price-card{display:flex;flex-direction:column;gap:12px}
+.price-card.hl{border:2px solid var(--v)}
+.price{font-size:34px;font-weight:800;letter-spacing:-.03em}
+.price small{font-size:14px;color:var(--muted);font-weight:500}
+.bnav{display:none}
+.sidebg{display:none}
+/* landing */
+.lp{background:var(--card)}
+.lp-nav{display:flex;align-items:center;gap:22px;max-width:1180px;margin:0 auto;padding:18px 24px}
+.lp-nav .brand{color:var(--ink);padding:0}
+.lp-nav .links{display:flex;gap:22px;margin-left:24px}
+.lp-nav .links a{color:var(--ink2);font-weight:500}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding:56px 24px 72px}
+.hero h1{font-size:clamp(36px,5.2vw,60px);line-height:1.04;letter-spacing:-.04em;font-weight:800;max-width:12ch}
+.hero p.lead{font-size:18px;color:var(--ink2);margin:20px 0 28px;max-width:46ch}
+.hero .note{font-size:13px;color:var(--muted);margin-top:14px}
+.stage{position:relative;background:var(--side);border-radius:24px;padding:22px;box-shadow:0 40px 80px -40px rgba(43,24,120,.6)}
+.stage .card{box-shadow:none}
+.stage .float{position:absolute;right:-14px;bottom:-22px;width:260px}
+.sect{padding:80px 0;border-top:1px solid var(--line)}
+.sect h2{font-size:clamp(26px,3.4vw,38px);letter-spacing:-.03em;font-weight:800;max-width:22ch}
+.sect .intro{color:var(--muted);font-size:16px;margin:12px 0 36px;max-width:56ch}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.step{padding:20px;border-left:2px solid var(--line)}
+.step::before{counter-increment:s;content:counter(s);display:block;font-size:13px;font-weight:700;color:var(--v);margin-bottom:12px}
+.step h3{font-size:16px;margin-bottom:6px}
+.step p{color:var(--muted);font-size:13.5px}
+.feat h3{font-size:16px;margin:12px 0 6px}
+.feat p{color:var(--muted);font-size:13.5px}
+.faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.faq summary{font-weight:600;cursor:pointer;font-size:15px}
+.faq details p{color:var(--ink2);margin-top:8px;max-width:70ch}
+.foot{background:var(--side);color:var(--sideink);padding:48px 0 32px}
+.foot .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px}
+.foot h5{color:#fff;margin:0 0 10px;font-size:13px}
+.foot a{display:block;color:var(--sideink);margin:6px 0;font-size:13px}
+.auth{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--bg)}
+.auth .card{width:100%;max-width:440px;padding:30px}
+.ob{max-width:760px;margin:0 auto;padding:48px 24px}
+.stepper{display:flex;gap:8px;margin-bottom:28px}
+.stepper span{flex:1;height:4px;border-radius:4px;background:var(--line)}
+.stepper span.on{background:var(--v)}
+.article{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.article p{font-size:16.5px;line-height:1.75;color:var(--ink2);margin:0 0 18px}
+@media (max-width:1180px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.g3>.span-all{grid-column:1/-1}}
+@media (max-width:960px){
+ .app{grid-template-columns:1fr}
+ .side{position:fixed;left:0;top:0;bottom:0;width:270px;height:100%;transform:translateX(-100%);transition:transform .22s ease;padding-top:calc(22px + env(safe-area-inset-top,0px))}
+ .side.open{transform:none}
+ .sidebg.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:35}
+ .menu-t{display:grid}
+ .top{padding:10px 12px;top:0;gap:6px}
+ .top .chv{display:none}
+ .pbtn{min-width:0}
+ .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ .main{padding:16px 14px 100px}
+ .g21,.g12,.g2{grid-template-columns:1fr}
+ .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);z-index:30;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+ .bnav a,.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);border:0;background:transparent;padding:6px 0;font-weight:600;cursor:pointer}
+ .bnav .on{color:var(--v)}
+ .hero{grid-template-columns:1fr;padding-top:28px}
+ .stage .float{position:static;width:auto;margin-top:14px}
+ .steps{grid-template-columns:1fr 1fr}
+ .lp-nav .links{display:none}
+ .foot .cols{grid-template-columns:1fr 1fr}
+ .hide-m{display:none!important}
+}
+@media (max-width:620px){
+ .g4,.g3{grid-template-columns:1fr}
+ .metric .spark{width:34%}
+ .steps{grid-template-columns:1fr}
+ .pbtn{min-width:0}
+ .ph h1{font-size:22px}
+ .idea dl{grid-template-columns:1fr}
+ .bars .row{grid-template-columns:80px 1fr 40px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{.side,.top,.bnav,.demobar,.no-print,.sidebg{display:none!important}.app{display:block}.main{padding:0}.card{box-shadow:none;break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+<div id="root"><div style="padding:40vh 0;text-align:center;color:#8a87a0;font-family:system-ui">Loading…</div></div>
+<div id="modal"></div>
+<div id="toast"></div>
+<script>
+"use strict";
+/* ================= config (mirrors /lib/config/limits.ts & /lib/config/pricing.ts) ================= */
+const LIMITS={
+  free:{accountsPerPlatform:1,aiGenerationsPerMonth:3,ranges:[7,28],contentRows:5,competitors:0,exports:false},
+  pro:{accountsPerPlatform:5,aiGenerationsPerMonth:300,ranges:[7,28,90,180,365],contentRows:Infinity,competitors:2,exports:true}
+};
+const PRICES={GBP:{sym:"£",m:12,y:99},EUR:{sym:"€",m:14,y:119},USD:{sym:"$",m:15,y:129}};
+const REGIONS=[["GB","United Kingdom","GBP"],["IE","Ireland","EUR"],["FR","France","EUR"],["DK","Denmark","EUR"],["EU","Other Europe","EUR"],["US","United States","USD"],["OT","Rest of world","USD"]];
+const RANGES=[[7,"Last 7 days"],[28,"Last 28 days"],[90,"Last 90 days"],[180,"Last 6 months"],[365,"Last 12 months"]];
+function detectRegion(){const l=(navigator.language||"en-US");if(/GB/i.test(l))return"GB";if(/IE/i.test(l))return"IE";if(/^fr/i.test(l))return"FR";if(/^da/i.test(l))return"DK";if(/^(de|es|it|nl|pt|fi|sv|pl)/i.test(l))return"EU";if(/US/i.test(l))return"US";return"OT"}
+
+/* ================= state ================= */
+const store={get(k,d){try{const v=localStorage.getItem("nx:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("nx:"+k,JSON.stringify(v))}catch(e){}}};
+const DEFAULTS=()=>{const r=detectRegion();return{authed:false,user:{name:"Arvind",email:"arvind@example.com"},region:r,currency:REGIONS.find(x=>x[0]===r)[2],subStatus:"free",cycle:"monthly",connected:{instagram:false,youtube:false},platform:"instagram",range:28,aiUsed:0,saved:[],competitors:[],notifRead:false,demoMode:false,liveIG:false}};
+let S=Object.assign(DEFAULTS(),store.get("state",{}));
+const ui={contentTab:"all",ytTab:"all",anTab:"overview",setTab:"accounts",cPlat:"instagram",niche:"Travel",ideas:null,caption:null,captionText:"",sort:"views",sideOpen:false,dd:null,sortDir:-1};
+const save=()=>store.set("state",S);
+const isPro=()=>["trial","active","past_due"].includes(S.subStatus);
+const L=()=>isPro()?LIMITS.pro:LIMITS.free;
+const both=()=>S.connected.instagram&&S.connected.youtube;
+function validPlatform(){const c=S.connected;if(S.platform==="all"&&!both())S.platform=c.instagram?"instagram":"youtube";if(S.platform==="instagram"&&!c.instagram&&c.youtube)S.platform="youtube";if(S.platform==="youtube"&&!c.youtube&&c.instagram)S.platform="instagram";if(!L().ranges.includes(S.range))S.range=28}
+
+/* ================= utils ================= */
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=n=>{if(n==null||isNaN(n))return"—";n=+n;const a=Math.abs(n);if(a>=1e6)return(n/1e6).toFixed(1).replace(/\.0$/,"")+"M";if(a>=1e3)return(n/1e3).toFixed(1).replace(/\.0$/,"")+"K";return String(Math.round(n))};
+const dur=s=>{s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+const pct=n=>n==null||isNaN(n)?"—":(+n).toFixed(1)+"%";
+const fmtV=(v,f)=>f==="pct"?pct(v):f==="dur"?dur(v):f==="hrs"?fmt(v)+" h":fmt(v);
+const dAgo=n=>new Date(Date.now()-n*864e5);
+const dfmt=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+const dshort=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+const avg=(a,f)=>a.length?a.reduce((s,x)=>s+f(x),0)/a.length:0;
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+function rng(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return(h>>>0)/4294967296}}
+function toast(msg){const t=document.getElementById("toast");t.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;clearTimeout(toast._t);toast._t=setTimeout(()=>t.innerHTML="",2800)}
+const P_NAME={instagram:"Instagram",youtube:"YouTube",all:"All accounts"};
+
+/* ================= icons ================= */
+const ICONS={home:'<path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/>',chart:'<path d="M3 21h18M6 17v-5M11 17V7M16 17v-8M21 17V4"/>',grid:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/>',users:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 3.5a4 4 0 0 1 0 9M19 15c2 .8 3 2.8 3 6"/>',spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 3v4M17 5h4"/>',pen:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',file:'<path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5M9 13h7M9 17h7"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/>',bookmark:'<path d="M6 3h12v18l-6-4-6 4z"/>',sliders:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',chev:'<path d="M6 9l6 6 6-6"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',heart:'<path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/>',play:'<path d="M7 4l13 8-13 8z"/>',plus:'<path d="M12 5v14M5 12h14"/>',check:'<path d="M5 12l5 5 9-10"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',comment:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',share:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>',up:'<path d="M12 19V5M6 11l6-6 6 6"/>',down:'<path d="M12 5v14M6 13l6 6 6-6"/>',crown:'<path d="M3 7l4 5 5-7 5 7 4-5-2 12H5z"/>',ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',yt:'<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/>',layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',out:'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l-5-5 5-5M5 12h11"/>',copy:'<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',print:'<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/>',refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/>',alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/>',trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',save:'<path d="M6 3h12v18l-6-4-6 4z"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',grid4:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'};
+const I=(n,s=18)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
+const pIcon=(p,s=22)=>`<span class="picon ${p==="instagram"?"ig":p==="youtube"?"yt":"all"}" style="width:${s}px;height:${s}px">${I(p==="instagram"?"ig":p==="youtube"?"yt":"layers",Math.round(s*.66))}</span>`;
+const LOGO=`<span class="mark">${I("trend",18).replace('stroke="currentColor"','stroke="#fff"')}</span>`;
+
+/* ================= DATA LAYER — demo provider =================
+   In production these calls hit /api/instagram/* and /api/youtube/* (server routes
+   that hold tokens). The UI only ever sees the normalised shapes below. */
+const DEMO={
+  profiles:{instagram:{handle:"arvind.explores",name:"Arvind Mehta",followers:125400},youtube:{handle:"Arvind Explores",name:"Arvind Explores",subscribers:48200}},
+  ig:[
+    {id:"ig1",type:"reel",title:"Hidden Paradise in Himachal",ago:4,views:1200000,likes:42000,comments:520,shares:2100,saves:3100,hour:19,change:28},
+    {id:"ig2",type:"reel",title:"Sunrise at 12,000 ft",ago:11,views:850000,likes:28000,comments:310,shares:1400,saves:1800,hour:18,change:18},
+    {id:"ig3",type:"reel",title:"Most Beautiful Waterfall",ago:17,views:620000,likes:21000,comments:280,shares:900,saves:1200,hour:20,change:12},
+    {id:"ig4",type:"post",title:"Packing list for a 10-day Spiti road trip",ago:8,views:180000,likes:9800,comments:410,shares:620,saves:5200,hour:12,change:6},
+    {id:"ig5",type:"post",title:"Golden hour at Chandratal",ago:14,views:140000,likes:7400,comments:190,shares:210,saves:860,hour:9,change:-3},
+    {id:"ig6",type:"story",title:"Q&A: how I plan budget trips",ago:6,views:42000,likes:1200,comments:340,shares:90,saves:0,hour:21,change:4},
+    {id:"ig7",type:"reel",title:"Street food crawl in Old Manali",ago:22,views:410000,likes:15200,comments:260,shares:700,saves:980,hour:19,change:9},
+    {id:"ig8",type:"post",title:"My 2026 camera bag",ago:26,views:96000,likes:4100,comments:150,shares:120,saves:1300,hour:13,change:-8},
+    {id:"ig9",type:"story",title:"Behind the scenes: drone shot",ago:10,views:38000,likes:900,comments:120,shares:40,saves:0,hour:17,change:2},
+    {id:"ig10",type:"reel",title:"Night sky over Kaza",ago:41,views:520000,likes:19800,comments:330,shares:1100,saves:2400,hour:21,change:15}],
+  yt:[
+    {id:"yt1",type:"long",title:"I spent 7 days in Spiti Valley on a tiny budget",ago:7,views:312000,likes:14200,comments:1180,watch:21400,len:1140,hour:18,change:34},
+    {id:"yt2",type:"short",title:"This lake sits at 4,300 m",ago:5,views:890000,likes:41000,comments:640,watch:6200,len:34,hour:19,change:41},
+    {id:"yt3",type:"long",title:"Kasol to Kheerganga trek: full guide",ago:18,views:188000,likes:8600,comments:720,watch:15600,len:1380,hour:17,change:11},
+    {id:"yt4",type:"short",title:"Maggi at 14,000 ft",ago:12,views:640000,likes:33000,comments:510,watch:4100,len:28,hour:20,change:22},
+    {id:"yt5",type:"long",title:"Budget camera setup for travel creators",ago:27,views:96000,likes:4100,comments:390,watch:6900,len:960,hour:12,change:-6},
+    {id:"yt6",type:"short",title:"Fog rolling over Dharamshala",ago:21,views:410000,likes:18200,comments:220,watch:2600,len:22,hour:21,change:8},
+    {id:"yt7",type:"long",title:"Himachal monsoon road trip vlog",ago:33,views:142000,likes:6200,comments:480,watch:10400,len:1500,hour:18,change:3},
+    {id:"yt8",type:"short",title:"How I edit reels in 10 minutes",ago:30,views:270000,likes:12800,comments:340,watch:1700,len:45,hour:13,change:-2}]
+};
+const DataService={
+  mode:"demo",
+  profile(p){if(p==="instagram"&&isLiveIG())return LiveIG.profile();return DEMO.profiles[p]},
+  metrics(p,range){
+    if(p==="instagram"&&isLiveIG())return LiveIG.metrics(range);
+    const R=rng(p+range),f=range/28,j=()=>.9+R()*.2,c=(lo,hi)=>+(lo+(hi-lo)*R()).toFixed(1),ex=range===28;
+    if(p==="instagram")return[
+      {key:"followers",label:"Followers",value:125400,change:ex?12.5:range<28?c(1.5,5):c(14,34),icon:"users",tone:"pink",color:"#7C5CFF"},
+      {key:"reach",label:"Reach",value:ex?1.2e6:1.2e6*f*j(),change:ex?18.2:c(-4,26),icon:"eye",tone:"green",color:"#3B82F6"},
+      {key:"engagement",label:"Engagement rate",value:ex?4.6:+(4.1+R()*.9).toFixed(1),change:ex?1.2:c(-1.4,2.6),f:"pct",icon:"heart",tone:"rose",color:"#E1306C"},
+      {key:"reelsViews",label:"Reels views",value:ex?2.8e6:2.8e6*f*j(),change:ex?22.1:c(-5,30),icon:"play",tone:"amber",color:"#F59E0B"}];
+    return[
+      {key:"subscribers",label:"Subscribers",value:48200,change:ex?6.4:range<28?c(.8,3):c(9,22),icon:"users",tone:"red",color:"#E52D27"},
+      {key:"views",label:"Views",value:ex?960000:960000*f*j(),change:ex?14.8:c(-6,24),icon:"eye",tone:"violet",color:"#7C5CFF"},
+      {key:"watch",label:"Watch time",value:ex?41200:41200*f*j(),change:ex?9.3:c(-5,18),f:"hrs",icon:"clock",tone:"green",color:"#0E9A66"},
+      {key:"videos",label:"Videos published",value:Math.max(1,Math.round(9*f)),change:ex?12.5:c(-20,25),icon:"play",tone:"amber",color:"#F59E0B"},
+      {key:"avd",label:"Avg view duration",value:ex?262:250+R()*30,change:ex?3.1:c(-4,6),f:"dur",icon:"clock",tone:"violet",pro:true,color:"#3B82F6"},
+      {key:"engagement",label:"Engagement",value:ex?5.1:+(4.6+R()*.9).toFixed(1),change:ex?.6:c(-1,2),f:"pct",icon:"heart",tone:"rose",pro:true,color:"#E1306C"}];
+  },
+  series(p,key,range){
+    if(p==="instagram"&&isLiveIG())return LiveIG.series(key,range);
+    const m=this.metrics(p,range).find(x=>x.key===key);const n=range<=28?range:range<=90?45:range<=180?60:52;const step=range/n;
+    const R=rng(p+key+range);const cumulative=["followers","subscribers","engagement","avd"].includes(key);
+    let end,start;
+    if(cumulative){end=m.value;start=end/(1+m.change/100)}else{const mean=m.value/n;end=mean*(1+m.change/200);start=mean*(1-m.change/200)}
+    const vol=cumulative?(key==="engagement"||key==="avd"?.02:.004):.12;
+    const vals=[],labels=[];
+    for(let i=0;i<n;i++){const t=n>1?i/(n-1):1;let v=start+(end-start)*t;v*=1+(R()-.5)*vol+(cumulative?0:Math.sin(i*.9)*.04);vals.push(i===n-1&&cumulative?end:v);labels.push(dshort(dAgo(Math.round((n-1-i)*step))))}
+    return{values:vals,labels,color:m.color,name:m.label,f:m.f};
+  },
+  content(p,range=9999){
+    if(p==="instagram"&&isLiveIG())return LiveIG.content(range);
+    const src=p==="instagram"?DEMO.ig:DEMO.yt;
+    return src.filter(c=>c.ago<=range).map(c=>{const inter=c.likes+c.comments+(c.shares||0)+(c.saves||0);return Object.assign({},c,{platform:p,date:dAgo(c.ago),er:inter/c.views*100})});
+  },
+  audience(p){if(p==="instagram"&&isLiveIG())return LiveIG.audience();return this.demoAudience(p)},
+  demoAudience(p){const R=rng("aud"+p);return{
+    age:[["13–17",p==="instagram"?4:6],["18–24",31],["25–34",42],["35–44",15],["45+",p==="instagram"?8:6]],
+    gender:[["Men",p==="instagram"?52:61],["Women",p==="instagram"?46:37],["Not specified",2]],
+    countries:[["India",34],["United Kingdom",18],["France",7],["Ireland",6],["Denmark",4],["Other",31]],
+    cities:[["Delhi",9],["London",7],["Mumbai",6],["Paris",3],["Dublin",3]],
+    heat:Array.from({length:8},(_,h)=>Array.from({length:7},(_,d)=>{const peak=h===6?1:h===7?.85:h===5?.6:h===4?.45:h===3?.35:h===0?.25:.12;return Math.min(1,peak*(.75+R()*.35)+(d>=5?.08:0))}))}},
+  unavailable:{instagram:{interests:"Audience interests aren't provided by the Instagram API, so Nexlytics doesn't show them."},youtube:{revenue:"Revenue needs a monetised channel and the yt-analytics-monetary.readonly permission. This channel hasn't granted it, so no revenue is shown."}}
+};
+
+
+/* ================= LIVE provider: Instagram via server functions (/api/instagram/*) =================
+   The browser never sees tokens or secrets. If /api is unreachable (e.g. preview), demo mode is used. */
+const LIVE={available:false,configured:false,profile:null,media:null,ins:{},aud:null,err:null,pending:{}};
+let FORCE_DEMO=false;
+const isLiveIG=()=>!FORCE_DEMO&&!S.demoMode&&S.liveIG&&LIVE.available;
+function asDemo(fn){const prev=FORCE_DEMO;FORCE_DEMO=true;try{return fn()}finally{FORCE_DEMO=prev}}
+async function api(path,opts={}){const r=await fetch(path,Object.assign({credentials:"same-origin",headers:{accept:"application/json"}},opts));const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.message||j.error||("HTTP "+r.status));e.code=j.error||("HTTP_"+r.status);throw e}return j}
+function loadOnce(key,fn){if(LIVE.pending[key])return;LIVE.pending[key]=fn().then(()=>{}).catch(e=>{LIVE.err=e}).finally(()=>{delete LIVE.pending[key];rerender()})}
+function needIG(){if(!isLiveIG()||LIVE.err)return false;const k=S.range;let wait=false;
+  if(!LIVE.profile){wait=true;loadOnce("profile",async()=>{LIVE.profile=await api("/api/instagram/profile")})}
+  if(!LIVE.media){wait=true;loadOnce("media",async()=>{LIVE.media=(await api("/api/instagram/media")).items||[]})}
+  if(!LIVE.ins[k]){wait=true;loadOnce("ins"+k,async()=>{LIVE.ins[k]=await api("/api/instagram/insights?range="+k)})}
+  return wait}
+function needAud(){if(!isLiveIG()||LIVE.aud||LIVE.err)return false;loadOnce("aud",async()=>{LIVE.aud=await api("/api/instagram/audience")});return true}
+function resetLive(){LIVE.profile=null;LIVE.media=null;LIVE.ins={};LIVE.aud=null;LIVE.err=null}
+const pchg=(a,b)=>a==null||b==null||!b?null:+((a-b)/Math.abs(b)*100).toFixed(1);
+const vw=c=>c.views??c.reach??0;
+const LiveIG={
+  profile(){const p=LIVE.profile||{};return{handle:p.username||"",name:p.name||p.username||"",followers:p.followers_count??null,pic:p.profile_picture_url||null}},
+  content(range=9999){return(LIVE.media||[]).map(m=>{const d=new Date(m.timestamp);const ago=Math.floor((Date.now()-d)/864e5);const inter=m.interactions??((m.likes||0)+(m.comments||0)+(m.shares||0)+(m.saves||0));return Object.assign({},m,{platform:"instagram",date:d,ago,hour:d.getHours(),change:null,er:m.reach?inter/m.reach*100:null,live:true})}).filter(c=>c.ago<=range)},
+  metrics(range){const i=LIVE.ins[range],p=LIVE.profile||{};if(!i)return[];const cur=i.current||{},prev=i.previous||{};
+    const er=cur.reach&&cur.total_interactions!=null?cur.total_interactions/cur.reach*100:null,erp=prev.reach&&prev.total_interactions!=null?prev.total_interactions/prev.reach*100:null;
+    const all=this.content();const rv=sum(all.filter(c=>c.type==="reel"&&c.ago<=range),c=>c.views||0),prv=sum(all.filter(c=>c.type==="reel"&&c.ago>range&&c.ago<=2*range),c=>c.views||0);
+    const fol=p.followers_count;const fch=i.followerGain!=null&&fol!=null&&fol-i.followerGain>0?+(i.followerGain/(fol-i.followerGain)*100).toFixed(1):null;
+    const un="Instagram didn’t return this metric for this period.";
+    return[
+      {key:"followers",label:"Followers",value:fol,change:fch,icon:"users",tone:"pink",color:"#7C5CFF",unavailable:fol==null?un:null,note:fch==null?"Growth needs 100+ followers":null},
+      {key:"reach",label:"Reach",value:cur.reach,change:pchg(cur.reach,prev.reach),icon:"eye",tone:"green",color:"#3B82F6",unavailable:cur.reach==null?un:null,note:range>30?"Sum of 30-day windows":null},
+      {key:"engagement",label:"Engagement rate",value:er,change:pchg(er,erp),f:"pct",icon:"heart",tone:"rose",color:"#E1306C",unavailable:er==null?un:null},
+      {key:"reelsViews",label:"Reels views",value:rv,change:prv?pchg(rv,prv):null,icon:"play",tone:"amber",color:"#F59E0B",note:"From your latest 30 posts"}]},
+  series(key,range){const i=LIVE.ins[range];if(!i)return null;const lab=v=>dshort(new Date(v.date));
+    if(key==="reach"&&i.reachDaily&&i.reachDaily.length>1)return{name:"Reach (daily)",color:"#3B82F6",values:i.reachDaily.map(v=>v.value),labels:i.reachDaily.map(lab)};
+    if(key==="followers"&&i.followerDaily&&i.followerDaily.length>1&&LIVE.profile&&LIVE.profile.followers_count!=null){let run=LIVE.profile.followers_count;const arr=[];for(let k=i.followerDaily.length-1;k>=0;k--){arr.unshift(run);run-=i.followerDaily[k].value}return{name:"Followers",color:"#7C5CFF",values:arr,labels:i.followerDaily.map(lab)}}
+    return null},
+  audience(){const a=LIVE.aud;if(!a)return null;let cn=null;try{cn=new Intl.DisplayNames(["en"],{type:"region"})}catch(e){}
+    const top=(arr,n,map)=>arr?arr.slice(0,n).map(x=>[map?map(x[0]):x[0],x[1]]):null;
+    return{age:top(a.age,6),gender:top(a.gender,3,g=>({F:"Women",M:"Men",U:"Not specified"})[g]||g),countries:top(a.country,6,c=>{try{return cn?cn.of(c):c}catch(e){return c}}),cities:top(a.city,5,c=>String(c).split(",")[0]),hours:a.hours,heat:null,live:true}}
+};
+function audState(p){if(p==="instagram"&&isLiveIG()){if(!isPro())return{a:DataService.demoAudience(p)};needAud();const a=LiveIG.audience();return a?{a}:{loading:!LIVE.err,a:null}}return{a:DataService.demoAudience(p)}}
+const Unav=t=>`<div class="unav" style="font-size:13px;padding:12px">${I("info",15)} Unavailable. ${t}</div>`;
+const Loading=(t="Loading your Instagram data…")=>`<div class="empty"><div class="ei">${I("refresh",22).replace('class="ic"','class="ic spin"')}</div><p>${t}</p></div>`;
+const AUD100="Instagram shares this only for accounts with 100+ followers.";
+function hourBars(h){const slots=["12–3 AM","3–6 AM","6–9 AM","9 AM–12","12–3 PM","3–6 PM","6–9 PM","9 PM–12"].map((l,i)=>[l,h.slice(i*3,i*3+3).reduce((a,b)=>a+b,0)]);const mx=Math.max(...slots.map(x=>x[1]))||1;return bars(slots.map(x=>[x[0],Math.round(x[1]/mx*100)]))+'<p class="muted" style="font-size:12px;margin-top:8px">Followers online by time of day, as % of the busiest slot (your local time may differ)</p>'}
+function ageBlock(a){return a&&a.age?donut(a.age):Unav(AUD100)}
+function timeBlock(a){return a&&a.heat?heatmap(a.heat):a&&a.hours?hourBars(a.hours):Unav(AUD100)}
+function ErrorState(e){const c=e.code||"";const m=({NOT_CONNECTED:["Instagram isn’t connected","Connect your account to load your analytics.","Connect Instagram","connect"],TOKEN_EXPIRED:["Your Instagram connection expired","Reconnect to keep your analytics up to date.","Reconnect Instagram","reconnect"],PERMISSION_MISSING:["Insights permission is missing","Reconnect and approve every requested permission. Instagram only shares insights for Business and Creator accounts.","Reconnect Instagram","reconnect"],RATE_LIMITED:["Instagram is limiting requests","Wait a few minutes, then try again.","Try again","retry"],NOT_CONFIGURED:["Instagram isn’t set up on the server","Add the app ID, secret and redirect URI in Netlify, then redeploy.","Try again","retry"]})[c]||["Couldn’t load Instagram data",e.message||"Try again in a moment.","Try again","retry"];
+  return`<div class="card">${Empty("alert",m[0],esc(m[1]),`<button class="btn btn-p" style="margin-top:14px" data-act="${m[3]}" data-v="instagram">${m[2]}</button>`)}</div>`}
+
+/* ================= insights engine (rule-based in demo; /services/ai/coach in prod) =================
+   Every statement is computed from DataService output and carries its basis. */
+function buildInsights(){
+  const out={summary:[],working:[],improve:[],next:[],growth:[]};
+  if(S.connected.instagram){
+    const ig=DataService.content("instagram");const reels=ig.filter(c=>c.type==="reel"),posts=ig.filter(c=>c.type==="post"),stories=ig.filter(c=>c.type==="story");
+    const m=DataService.metrics("instagram",S.range);const fm=m.find(x=>x.key==="followers"),rm=m.find(x=>x.key==="reach");
+    if(fm&&fm.value!=null)out.summary.push({t:`You have ${fmt(fm.value)} Instagram followers${fm.change!=null?`, ${fm.change>=0?"up":"down"} ${Math.abs(fm.change)}% in this period`:""}.${rm&&rm.change!=null?` Reach is ${rm.change>=0?"up":"down"} ${Math.abs(rm.change)}% on the previous period.`:""}`,b:`${rangeLabel()}, account totals`,i:"trend",tone:"t-violet"});
+    const erOf=a=>avg(a.filter(c=>c.er!=null),c=>c.er);
+    if(reels.length&&posts.length)out.working.push({t:`Reels average ${fmt(avg(reels,vw))} views and ${pct(erOf(reels))} engagement. Posts average ${fmt(avg(posts,vw))} and ${pct(erOf(posts))}.`,b:`${reels.length} Reels vs ${posts.length} posts`,i:"play",tone:"t-amber"});
+    const top3=[...ig].sort((a,b)=>vw(b)-vw(a)).slice(0,3);
+    if(top3.length>=3){const h=top3.map(c=>c.hour);out.working.push({t:`Your 3 most-viewed posts went live between ${Math.min(...h)}:00 and ${Math.max(...h)+1}:00. Worth testing that window on purpose.`,b:`Publish times of your top 3 posts (a pattern, not proof of cause)`,i:"clock",tone:"t-green"})}
+    const sr=a=>avg(a.filter(c=>c.saves!=null&&vw(c)>0),c=>c.saves/vw(c)*100);const saveP=sr(posts),saveR=sr(reels);
+    const ts=[...ig].filter(c=>c.saves!=null).sort((a,b)=>b.saves-a.saves)[0];
+    if(saveP&&saveR&&ts)out.working.push({t:saveP>=saveR?`Posts earn ${(saveP/saveR).toFixed(1)}× more saves per view than Reels. “${ts.title}” leads with ${fmt(ts.saves)} saves.`:`Reels earn ${(saveR/saveP).toFixed(1)}× more saves per view than posts. “${ts.title}” leads with ${fmt(ts.saves)} saves.`,b:`Saves ÷ views across ${posts.length+reels.length} feed items`,i:"bookmark",tone:"t-violet"});
+    const tv=sum(ig,vw);if(tv&&ig.length){const comRate=sum(ig,c=>c.comments||0)/tv*1000;out.improve.push({t:`You get ${comRate.toFixed(1)} comments per 1,000 views. Ending captions with one direct question is an easy test.`,b:`${ig.length} items, comments ÷ views`,i:"comment",tone:"t-rose"})}
+    if(stories.length&&fm&&fm.value)out.improve.push({t:`Stories reach about ${fmt(avg(stories,vw))} people each, roughly ${(avg(stories,vw)/fm.value*100).toFixed(0)}% of your followers.`,b:`${stories.length} Stories in the period`,i:"eye",tone:"t-rose"});
+    const neg=ig.filter(c=>c.change!=null&&c.change<0);if(neg.length)out.improve.push({t:`${neg.length} posts performed below your average: ${neg.map(c=>`“${c.title}”`).join(", ")}.`,b:`Change vs your 90-day average per post`,i:"down",tone:"t-rose"});
+    if(top3.length)out.next.push({t:`A ${top3[0].type==="reel"?"Reel":"post"} on the same theme as “${top3[0].title}”, your most-viewed piece, published around ${top3[0].hour}:00.`,b:`Top post by views`,i:"spark",tone:"t-violet"});
+    if(ts&&ts.saves)out.next.push({t:`A carousel checklist on the topic of “${ts.title}”. That’s what your audience saves most.`,b:`Most-saved post`,i:"grid",tone:"t-violet"});
+    const per=ig.filter(c=>c.ago<=28&&c.type!=="story").length/4;if(ig.length)out.growth.push({t:`You published ${per.toFixed(1)} feed posts per week in the last 28 days. A steady rhythm makes it easier to see which changes work.`,b:`Feed posts, last 28 days`,i:"cal",tone:"t-green"});
+    if(!ig.length)out.summary.push({t:`No posts found on this account yet. Publish a few, then check back for recommendations.`,b:`Your media list`,i:"info",tone:"t-violet"});
+  }
+  if(S.connected.youtube){
+    const yt=DataService.content("youtube");const sh=yt.filter(c=>c.type==="short"),lg=yt.filter(c=>c.type==="long");
+    out.working.push({t:`Shorts average ${fmt(avg(sh,c=>c.views))} views, compared with ${fmt(avg(lg,c=>c.views))} for long-form videos.`,b:`${sh.length} Shorts vs ${lg.length} long-form videos`,i:"yt",tone:"t-amber"});
+    const lw=sum(lg,c=>c.watch)/sum(yt,c=>c.watch)*100;
+    out.growth.push({t:`Long-form produced ${lw.toFixed(0)}% of your watch time from ${(lg.length/yt.length*100).toFixed(0)}% of uploads. Shorts bring reach; long-form keeps viewers.`,b:`Watch hours by format`,i:"clock",tone:"t-green"});
+    out.next.push({t:`A long-form follow-up to "${sh.sort((a,b)=>b.views-a.views)[0].title}". Your most-viewed Short can point viewers to it.`,b:`Top Short by views`,i:"play",tone:"t-violet"});
+  }
+  if(both())out.growth.push({t:`Spiti content performs on both platforms. Re-cutting your top YouTube video into 2–3 Reels uses material you already have.`,b:`Top items on each platform share the same location`,i:"layers",tone:"t-green"});
+  return out;
+}
+
+/* ================= charts ================= */
+let CH={},chN=0;
+function lineChart(series,{h=230,area=true,norm=null}={}){
+  const id="ch"+(++chN);CH[id]=series;const n=series[0].values.length;const normalize=norm===null?series.length>1:norm;
+  let gmin=Infinity,gmax=-Infinity;series.forEach(s=>s.values.forEach(v=>{gmin=Math.min(gmin,v);gmax=Math.max(gmax,v)}));
+  const pad=(gmax-gmin)*.12||1;const lo=Math.max(0,gmin-pad),hi=gmax+pad;
+  const paths=series.map((s,si)=>{let mn=lo,mx=hi;if(normalize){mn=Math.min(...s.values);mx=Math.max(...s.values);const p=(mx-mn)*.15||1;mn-=p;mx+=p}
+    const pts=s.values.map((v,i)=>[n>1?i/(n-1)*100:50,100-(v-mn)/(mx-mn||1)*100]);
+    const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(2)+" "+p[1].toFixed(2)).join(" ");
+    const gid=id+"g"+si;
+    return(area&&si===0?`<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s.color}" stop-opacity=".22"/><stop offset="1" stop-color="${s.color}" stop-opacity="0"/></linearGradient></defs><path d="${d} L100 100 L0 100Z" fill="url(#${gid})"/>`:"")+`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`}).join("");
+  const grid=[0,25,50,75,100].map(y=>`<line x1="0" x2="100" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1" vector-effect="non-scaling-stroke"/>`).join("");
+  const labs=series[0].labels;const k=Math.min(6,n);const xl=Array.from({length:k},(_,i)=>labs[Math.round(i*(n-1)/(Math.max(1,k-1)))]);
+  const yl=normalize?"":`<div class="ch-y">${[hi,hi-(hi-lo)*.25,hi-(hi-lo)*.5,hi-(hi-lo)*.75,lo].map(v=>`<span>${fmtV(v,series[0].f)}</span>`).join("")}</div>`;
+  const legend=series.length>1?`<div class="legend">${series.map(s=>`<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("")}</div>`:"";
+  return`${legend}<div style="position:relative">${yl}<div class="chart ${normalize?"":"padl"}" data-chart="${id}" style="height:${h}px"><svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="${esc(series.map(s=>s.name).join(", "))} over time">${grid}${paths}</svg><div class="ch-ln"></div><div class="ch-tip"></div></div></div><div class="ch-x" style="${normalize?"":"padding-left:42px"}">${xl.map(l=>`<span>${l}</span>`).join("")}</div>`;
+}
+function spark(vals,color){const mn=Math.min(...vals),mx=Math.max(...vals),n=vals.length;const pts=vals.map((v,i)=>[(i/(n-1)*100).toFixed(1),(92-(v-mn)/(mx-mn||1)*80).toFixed(1)]);const d=pts.map((p,i)=>(i?"L":"M")+p[0]+" "+p[1]).join(" ");const g="sp"+(++chN);
+  return`<svg class="spark" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".25"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><path d="${d} L100 100 L0 100Z" fill="url(#${g})"/><path d="${d}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`}
+function donut(segs){let off=25;const cols=["#7C5CFF","#3B82F6","#E1306C","#F59E0B","#0E9A66","#A5A2BD"];
+  const arcs=segs.map((s,i)=>{const a=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="${cols[i%cols.length]}" stroke-width="6" stroke-dasharray="${s[1]} ${100-s[1]}" stroke-dashoffset="${off}"/>`;off-=s[1];return a}).join("");
+  return`<div class="donut-wrap"><svg viewBox="0 0 42 42" role="img" aria-label="Distribution chart">${arcs}</svg><div class="dleg">${segs.map((s,i)=>`<div><i style="background:${cols[i%cols.length]}"></i>${s[0]}<b>${s[1]}%</b></div>`).join("")}</div></div>`}
+function bars(rows,suffix="%",color){const mx=Math.max(...rows.map(r=>r[1]));return`<div class="bars">${rows.map(r=>`<div class="row"><span>${esc(r[0])}</span><div class="tr"><div class="fill" style="width:${r[1]/mx*100}%;${color?"background:"+color:""}"></div></div><b style="text-align:right">${typeof r[1]==="number"&&suffix==="%"?r[1]+"%":esc(r[2]||r[1])}</b></div>`).join("")}</div>`}
+function heatmap(h){const hrs=["12 AM","3 AM","6 AM","9 AM","12 PM","3 PM","6 PM","9 PM"];const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  return`<div class="heat">${h.map((row,i)=>`<div class="h">${hrs[i]}</div>${row.map(v=>`<div class="c" style="opacity:${(.08+v*.92).toFixed(2)}" title="${(v*100).toFixed(0)}% of peak"></div>`).join("")}`).join("")}<div></div>${days.map(d=>`<div class="d">${d}</div>`).join("")}</div>`}
+document.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".chart");document.querySelectorAll(".chart.act").forEach(x=>{if(x!==c){x.classList.remove("act");x.querySelector(".ch-tip").style.opacity=0;x.querySelector(".ch-ln").style.opacity=0}});if(!c)return;const s=CH[c.dataset.chart];if(!s)return;
+  const r=c.getBoundingClientRect(),padL=c.classList.contains("padl")?42:0;const w=r.width-padL;const x=Math.max(0,Math.min(w,e.clientX-r.left-padL));const n=s[0].values.length;const i=Math.round(x/w*(n-1));const px=padL+(n>1?i/(n-1)*w:w/2);
+  const tip=c.querySelector(".ch-tip"),ln=c.querySelector(".ch-ln");c.classList.add("act");tip.innerHTML=`<b>${s[0].labels[i]}</b>`+s.map(se=>`<div><i style="background:${se.color}"></i>${esc(se.name)}: ${fmtV(se.values[i],se.f)}</div>`).join("");tip.style.left=Math.max(70,Math.min(r.width-70,px))+"px";tip.style.top="30px";tip.style.opacity=1;ln.style.left=px+"px";ln.style.opacity=1});
+
+/* ================= components ================= */
+function MetricCard(m,p){
+  if(m.unavailable)return`<div class="card metric"><div class="mic t-violet">${I(m.icon,22)}</div><div><div class="lab">${m.label}</div><div class="val">—</div><div class="unav">${esc(m.unavailable)}</div></div></div>`;
+  const s=p?DataService.series(p,m.key,S.range):null;const up=m.change>=0;
+  const chg=m.change==null?`<div class="chg muted" style="font-weight:500;white-space:normal">${m.note||"No previous period to compare"}</div>`:`<div class="chg ${up?"up":"down"}">${I(up?"up":"down",14)} ${Math.abs(m.change)}% <span class="muted">vs prev.</span></div>${m.note?`<div class="muted" style="font-size:11.5px">${m.note}</div>`:""}`;
+  return`<div class="card metric"><div class="mic t-${m.tone}">${I(m.icon,22)}</div><div><div class="lab">${m.label}</div><div class="val">${fmtV(m.value,m.f)}</div>${chg}</div>${s&&s.values.length>1?spark(s.values,m.color):""}</div>`}
+function Locked(key,title,desc,inner,opts={}){
+  if(isPro())return inner;
+  return`<div class="lockwrap" style="${opts.minh?"min-height:"+opts.minh+"px":""}"><div class="blurred" aria-hidden="true">${inner}</div><div class="lockov"><div class="lockbox ${opts.compact?"cmp":""}"><div class="lki">${I("lock",17)}</div><h4>${title}</h4>${opts.compact?"":`<p>${desc}</p>`}<button class="btn btn-p btn-sm" data-act="upgrade" data-v="${key}">Upgrade to Pro</button></div></div></div>`}
+function Thumb(c,sm){if(c.thumb){const ty=c.type==="reel"?"play":c.type==="story"?"clock":"grid4";return`<div class="thumb ${sm?"sm":""}" style="--a:#d9d6e8;--b:#b9b5cf"><img src="${esc(c.thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()"><span class="tb">${I(ty,11)}</span></div>`}const pals=[["#28437a","#9cc3ea","#1e3a2f"],["#f6a24a","#fde6b0","#4a2a1a"],["#3b5f4b","#a9d2b8","#173426"],["#5b3c88","#d1b2f0","#2a1a44"],["#1f4f73","#7cc6e4","#0f2a3d"],["#7a2f3b","#f0b4a0","#3a1a20"]];
+  let h=0;for(const ch of c.id)h=(h*31+ch.charCodeAt(0))>>>0;const p=pals[h%pals.length];const ty=c.type==="reel"||c.type==="short"?"play":c.type==="story"?"clock":c.type==="long"?"yt":"grid4";
+  return`<div class="thumb ${sm?"sm":""}" style="--a:${p[0]};--b:${p[1]}"><svg viewBox="0 0 64 48" preserveAspectRatio="none" aria-hidden="true"><circle cx="${18+h%28}" cy="15" r="5" fill="#fff" opacity=".7"/><path d="M0 34 L14 ${18+h%8} L26 30 L38 ${14+h%10} L64 32 V48 H0Z" fill="${p[2]}" opacity=".85"/></svg><span class="tb">${I(ty,11)}</span></div>`}
+function ContentRow(c){const ig=c.platform==="instagram";const up=c.change>=0;
+  return`<div class="citem">${Thumb(c)}<div class="ct"><h5 title="${esc(c.title)}">${c.permalink?`<a href="${esc(c.permalink)}" target="_blank" rel="noopener" style="color:inherit">${esc(c.title)}</a>`:esc(c.title)}</h5><div class="date">${dfmt(c.date)} · ${({reel:"Reel",post:"Post",story:"Story",short:"Short",long:"Video"})[c.type]}</div><div class="stats"><span>${I("play",13)}${fmt(c.views)}</span><span>${I("heart",13)}${fmt(c.likes)}</span><span>${I("comment",13)}${fmt(c.comments)}</span>${ig?`<span>${I("bookmark",13)}${fmt(c.saves)}</span>`:`<span>${I("clock",13)}${fmt(c.watch)} h</span>`}</div></div>${c.change==null?"":`<span class="pill ${up?"up":"down"}">${up?"+":""}${c.change}%</span>`}</div>`}
+function Empty(icon,title,text,btn){return`<div class="empty"><div class="ei">${I(icon,22)}</div><h4>${title}</h4><p>${text}</p>${btn||""}</div>`}
+function Card(title,body,right="",cls=""){return`<div class="card ${cls}"><div class="card-h"><h3>${title}</h3>${right}</div>${body}</div>`}
+function Insight(x){return`<div class="ins"><div class="ii ${x.tone}">${I(x.i,16)}</div><div><p>${esc(x.t)}</p><div class="basis">Based on: ${esc(x.b)}</div></div></div>`}
+function Badge(){const map={free:"Free",trial:"Pro trial",active:"Pro",past_due:"Past due",cancelled:"Cancelled"};return`<span class="badge b-${S.subStatus}">${map[S.subStatus]}</span>`}
+const rangeLabel=()=>RANGES.find(r=>r[0]===S.range)[1];
+
+/* ================= shell ================= */
+const NAV=[["dashboard","Dashboard","home",0],["analytics","Analytics","chart",0],["content","Content","grid",0],["audience","Audience","users",0],["coach","AI Coach","spark",1],["caption","Caption AI","pen",0],["competitors","Competitor Analysis","target",1],["reports","Reports","file",1],["ideas","Content Ideas","bulb",1],["saved","Saved","bookmark",1],["settings","Settings","sliders",0]];
+function Shell(page,body){
+  const pro=isPro();const plats=[];if(S.connected.instagram)plats.push("instagram");if(S.connected.youtube)plats.push("youtube");if(both())plats.push("all");
+  const missing=!S.connected.instagram?"instagram":!S.connected.youtube?"youtube":null;
+  const sym=PRICES[S.currency].sym;
+  return`<div class="app">
+  <div class="sidebg ${ui.sideOpen?"open":""}" data-act="side"></div>
+  <aside class="side ${ui.sideOpen?"open":""}" aria-label="Main navigation">
+    <a class="brand" href="#/">${LOGO}Nexlytics</a>
+    <nav class="nav">${NAV.map(n=>`<a href="#/app/${n[0]}" class="${page===n[0]?"on":""}" ${page===n[0]?'aria-current="page"':""}>${I(n[2],19)}<span>${n[1]}</span>${n[3]&&!pro?`<span class="lk">${I("lock",15)}</span>`:""}</a>`).join("")}</nav>
+    ${pro?`<div class="upcard"><h4>${I("crown",18)} Nexlytics Pro</h4><p style="font-size:12.5px">${S.subStatus==="trial"?"Your trial is active. All features are unlocked.":S.subStatus==="past_due"?"Your last payment failed. Update your card to keep Pro.":"All features unlocked."}</p><a class="btn btn-sm" style="margin-top:12px;width:100%;background:transparent;color:#fff;border-color:rgba(255,255,255,.25)" href="#/app/settings" data-act="settab" data-v="billing">Manage billing</a></div>`:
+    `<div class="upcard"><div style="font-size:11px;font-weight:700;color:#A996FF;margin-bottom:4px">Free plan</div><h4>${I("crown",18)} Upgrade to Pro</h4><p style="font-size:12.5px;color:#C9C5E6">Unlock advanced analytics, AI insights and reports.</p><ul>${["Advanced analytics","AI Coach & content ideas","Competitor tracking","PDF & CSV reports"].map(x=>`<li>${I("check",14)}${x}</li>`).join("")}</ul><button class="btn btn-p" style="width:100%" data-act="upgrade" data-v="sidebar">Upgrade to Pro</button><p style="font-size:11.5px;text-align:center;margin-top:8px;color:#A9A5C8">From ${sym}${PRICES[S.currency].m}/month</p></div>`}
+  </aside>
+  <div style="min-width:0">
+   <header class="top">
+    <button class="iconbtn menu-t" data-act="side" aria-label="Open menu">${I("menu")}</button>
+    <div class="dd"><button class="btn pbtn" data-act="dd" data-v="plat" aria-haspopup="true" aria-expanded="${ui.dd==="plat"}">${pIcon(S.platform)}<span>${P_NAME[S.platform]}</span><span class="cv">${I("chev",16)}</span></button>
+     ${ui.dd==="plat"?`<div class="ddm" role="menu">${plats.map(p=>`<button role="menuitem" class="${S.platform===p?"sel":""}" data-act="plat" data-v="${p}">${pIcon(p)} ${P_NAME[p]}</button>`).join("")}${missing?`<hr><button data-act="connect" data-v="${missing}">${I("plus",16)} Connect ${P_NAME[missing]}</button>`:""}</div>`:""}</div>
+    ${missing?`<button class="btn hide-m" data-act="connect" data-v="${missing}">${pIcon(missing,18)} Add ${P_NAME[missing]}</button>`:""}
+    <div class="sp"></div>
+    <div class="dd"><button class="btn" data-act="dd" data-v="range" aria-haspopup="true">${I("cal",16)}<span class="hide-m">${rangeLabel()}</span><span style="display:none" class="show-m">${S.range}d</span>${I("chev",16)}</button>
+     ${ui.dd==="range"?`<div class="ddm r" role="menu">${RANGES.map(r=>{const ok=L().ranges.includes(r[0]);return`<button role="menuitem" class="${S.range===r[0]?"sel":""}" data-act="${ok?"range":"upgrade"}" data-v="${ok?r[0]:"history"}">${r[1]}${ok?"":`<span style="margin-left:auto" class="muted">${I("lock",14)}</span>`}</button>`}).join("")}</div>`:""}</div>
+    <div class="dd"><button class="iconbtn" data-act="dd" data-v="notif" aria-label="Notifications">${I("bell",18)}${S.notifRead?"":'<span class="dot"></span>'}</button>
+     ${ui.dd==="notif"?`<div class="ddm r" style="width:300px;padding:10px">${(isLiveIG()?[["shield","Instagram connected. Data refreshes every 15 minutes."]]:[["trend","“Hidden Paradise in Himachal” passed 1M views."],["info","Weekly summary is ready."],["shield","Instagram connection renews in 52 days."]]).map(n=>`<div style="display:flex;gap:10px;padding:8px;font-size:13px">${I(n[0],16)}<span>${n[1]}</span></div>`).join("")}</div>`:""}</div>
+    <div class="dd"><button class="btn btn-ghost" style="padding:4px" data-act="dd" data-v="me" aria-label="Account menu"><span class="avatar">${esc(S.user.name[0]||"A")}</span><span class="chv">${I("chev",16)}</span></button>
+     ${ui.dd==="me"?`<div class="ddm r"><div style="padding:8px 10px"><b>${esc(S.user.name)}</b><div class="muted" style="font-size:12px">${esc(S.user.email)}</div><div style="margin-top:6px">${Badge()}</div></div><hr><a href="#/app/settings" data-act="settab" data-v="profile">${I("sliders",16)} Settings</a><a href="#/app/settings" data-act="settab" data-v="billing">${I("crown",16)} Billing</a><a href="#/admin">${I("shield",16)} Admin (demo)</a><hr><button data-act="logout">${I("out",16)} Sign out</button></div>`:""}</div>
+   </header>
+   <main class="main" id="main">
+    <div class="demobar no-print">${isLiveIG()?`<span><b style="color:var(--green)">Live data</b>: Instagram numbers come from ${DataService.profile("instagram").handle?"@"+esc(DataService.profile("instagram").handle):"your account"} through the official API. YouTube, plans and billing are still in demo.</span>`:`<span><b>Demo mode</b>: sample data, not real analytics.${LIVE.configured?` <button class="btn btn-sm" data-act="exitdemo" style="margin-left:6px">Use my real Instagram</button>`:" Live data replaces it once credentials are configured."}</span>`}<span style="margin-left:auto;display:flex;gap:8px;align-items:center">Preview as <span class="seg"><button class="${pro?"":"on"}" data-act="preview" data-v="free">Free</button><button class="${pro?"on":""}" data-act="preview" data-v="pro">Pro</button></span></span></div>
+    ${S.subStatus==="past_due"?`<div class="demobar" style="background:var(--amberbg);border-color:var(--amber)">${I("alert",16)} Your last payment failed. Pro stays active for 7 days while we retry. <a href="#/app/settings" data-act="settab" data-v="billing" style="margin-left:auto;font-weight:700">Update payment method</a></div>`:""}
+    ${body}
+   </main>
+  </div>
+  <nav class="bnav" aria-label="Quick navigation">${[["dashboard","Home","home"],["analytics","Analytics","chart"],["content","Content","grid"],["coach","AI Coach","spark"]].map(n=>`<a href="#/app/${n[0]}" class="${page===n[0]?"on":""}">${I(n[2],20)}${n[1]}</a>`).join("")}<button data-act="side">${I("menu",20)}More</button></nav>
+  </div>`}
+
+/* ================= dashboard ================= */
+function greet(){const h=new Date().getHours();return h<12?"Good morning":h<18?"Good afternoon":"Good evening"}
+function Header(sub){const missing=!S.connected.instagram?"instagram":!S.connected.youtube?"youtube":null;
+  return`<div class="ph"><div><h1>${greet()}, ${esc(S.user.name)}</h1><p>${sub}</p></div>${missing?`<button class="btn btn-p" data-act="connect" data-v="${missing}">${I("plus",16)} Connect ${P_NAME[missing]}</button>`:""}</div>`}
+function TopContent(p,limit=3,title){const tabs=p==="instagram"?[["all","All"],["reel","Reels"],["post","Posts"],["story","Stories"]]:[["all","All"],["short","Shorts"],["long","Long-form"]];const key=p==="instagram"?"contentTab":"ytTab";
+  const items=DataService.content(p,S.range).filter(c=>ui[key]==="all"||c.type===ui[key]).sort((a,b)=>vw(b)-vw(a)).slice(0,limit);
+  return Card(title||(p==="instagram"?"Top performing content":"Top videos"),items.length?items.map(ContentRow).join(""):Empty("grid","Nothing published in this period",`Try a longer date range.`),
+    `<div style="display:flex;gap:8px;align-items:center"><div class="tabs">${tabs.map(t=>`<button class="${ui[key]===t[0]?"on":""}" data-act="ctab" data-k="${key}" data-v="${t[0]}">${t[1]}</button>`).join("")}</div><a href="#/app/content" data-act="cplat" data-v="${p}" style="font-weight:600;font-size:13px">View all</a></div>`)}
+function PremiumRow(){const pro=isPro();
+  const items=[["pen","Caption AI","Write captions with stronger hooks and clearer calls to action.","caption","Unlock AI captions"],["target","Competitor Analysis","Compare your growth and content with up to 2 public accounts.","competitors","Unlock competitor analysis"],["file","Advanced Reports","Download PDF and CSV reports for clients or your own records.","reports","Unlock advanced reports"],["bulb","Content Ideas","Get ideas for your niche, shaped by what already works for you.","ideas","Unlock content ideas"]];
+  return`<div class="grid g4">${items.map(x=>{const head=`<div class="hd"><div class="mic t-violet" style="width:38px;height:38px;border-radius:11px">${I(x[0],18)}</div><h4>${x[1]}</h4>${pro?"":'<span class="tag-pro">PRO</span>'}</div>`;
+    if(pro)return`<div class="card prem">${head}<p class="muted" style="font-size:13px">${x[2]}</p><a class="btn btn-sm" style="align-self:flex-start" href="#/app/${x[3]}">Open ${x[1]}</a></div>`;
+    if(x[3]==="caption")return`<div class="card prem">${head}<p class="muted" style="font-size:13px">${x[2]}</p><a class="btn btn-sm btn-p" style="align-self:flex-start" href="#/app/caption">Try it · ${Math.max(0,LIMITS.free.aiGenerationsPerMonth-S.aiUsed)} free left</a></div>`;
+    return`<div class="card prem">${head}${Locked(x[3],x[4],x[2],'<div class="mini-rows"><div></div><div style="width:70%"></div><div style="width:85%"></div><div style="width:50%"></div></div>',{minh:172,compact:1})}</div>`}).join("")}</div>`}
+function DashIG(){const m=DataService.metrics("instagram",S.range);const {a,loading}=audState("instagram");
+  const gs=["followers","reach","engagement"].map(k=>DataService.series("instagram",k,S.range)).filter(Boolean);
+  const growth=gs.length?lineChart(gs):Empty("chart","No daily data yet","Instagram shares daily data for up to 30 days once your account has activity.");
+  const ig=DataService.content("instagram");const types=[["Reels","reel"],["Posts","post"],["Stories","story"]].map(t=>[t[0],ig.filter(c=>c.type===t[1]&&c.er!=null)]).filter(t=>t[1].length).map(t=>[t[0],+avg(t[1],c=>c.er).toFixed(1)]);
+  const live=isLiveIG();const prof=DataService.profile("instagram");
+  return Header(live&&prof.handle?`Here’s how @${esc(prof.handle)} is performing.`:"Here’s how your Instagram is performing.")+
+  `<div class="grid g4">${m.map(x=>MetricCard(x,"instagram")).join("")}</div>
+  <div class="grid g21">${Card("Growth overview",Locked("growth","Unlock detailed growth analytics","See day-wise followers, reach and engagement, and download the data.",growth,{minh:260}),`<span class="sub">${live?"Daily data, up to 30 days":rangeLabel()}</span>`)}
+  ${Card("Audience demographics",loading?Loading():Locked("audience","Unlock audience insights","See age, gender, locations and active times.",ageBlock(a)),isPro()?'<a href="#/app/audience" style="font-weight:600;font-size:13px">View all</a>':"")}</div>
+  <div class="grid g3">${TopContent("instagram")}
+  ${Card("Best time to post",loading?Loading():Locked("besttime","Unlock best time to post","See when your audience is most active.",timeBlock(a)))}
+  ${Card("Content type performance",Locked("ctype","Unlock content insights","Compare engagement across Reels, posts and Stories.",types.length?bars(types)+'<p class="muted" style="font-size:12px;margin-top:8px">Average engagement rate per format</p>':Empty("grid","Not enough posts yet","Publish a few posts to compare formats.")),"","span-all")}</div>`+PremiumRow()}
+function DashYT(){const m=DataService.metrics("youtube",S.range);const a=DataService.audience("youtube");
+  const free=m.filter(x=>!x.pro),pro=m.filter(x=>x.pro);
+  return Header("Here’s how your YouTube channel is performing.")+
+  `<div class="grid g4">${free.map(x=>MetricCard(x,"youtube")).join("")}</div>
+  <div class="grid g21">${Card("Views over time",lineChart([DataService.series("youtube","views",S.range)],{h:220}),`<span class="sub">${rangeLabel()}</span>`)}
+  ${Card("Subscriber growth",Locked("subs","Unlock advanced subscriber analytics","See daily subscriber gains and losses.",lineChart([DataService.series("youtube","subscribers",S.range)],{h:200,norm:true})))}</div>
+  <div class="grid g21">${TopContent("youtube")}
+  <div style="display:grid;gap:18px">${Locked("ytpro","Unlock watch-time depth","Average view duration and engagement per video.",`<div class="grid g2" style="margin:0">${pro.map(x=>MetricCard(x,"youtube")).join("")}</div>`,{minh:120})}
+  ${Card("Revenue",`<div class="unav" style="font-size:13px;padding:12px">${I("info",15)} Unavailable. ${DataService.unavailable.youtube.revenue}</div>`)}</div></div>
+  <div class="grid g2">${Card("Audience geography",Locked("geo","Unlock audience geography","See which countries and cities watch you.",bars(a.countries)))}
+  ${Card("Best publishing time",Locked("besttime","Unlock best publishing time","See when your viewers are online.",heatmap(a.heat)))}</div>`+PremiumRow()}
+function DashAll(){const mi=DataService.metrics("instagram",S.range),my=DataService.metrics("youtube",S.range);const g=k=>(mi.find(x=>x.key===k)||my.find(x=>x.key===k));
+  const followers=g("followers").value+g("subscribers").value,views=g("reelsViews").value+g("views").value;
+  const fch=+((g("followers").change*g("followers").value+g("subscribers").change*g("subscribers").value)/followers).toFixed(1);
+  const vch=+((g("reelsViews").change*g("reelsViews").value+g("views").change*g("views").value)/views).toFixed(1);
+  const eng=+((mi.find(x=>x.key==="engagement").value*g("reelsViews").value+my.find(x=>x.key==="engagement").value*g("views").value)/views).toFixed(1);
+  const content=DataService.content("instagram",S.range).length+DataService.content("youtube",S.range).length;
+  const cards=[{key:"tf",label:"Total followers & subscribers",value:followers,change:fch,icon:"users",tone:"violet"},{key:"tv",label:"Total views",value:views,change:vch,icon:"eye",tone:"green"},{key:"ce",label:"Combined engagement",value:eng,f:"pct",change:.9,icon:"heart",tone:"rose"},{key:"tc",label:"Total content",value:content,change:8.3,icon:"grid",tone:"amber"}];
+  const si=DataService.series("instagram","followers",S.range),sy=DataService.series("youtube","subscribers",S.range),vi=DataService.series("instagram","reelsViews",S.range),vy=DataService.series("youtube","views",S.range),ei=DataService.series("instagram","engagement",S.range);
+  const perf=[{name:"Followers",color:"#7C5CFF",labels:si.labels,values:si.values.map((v,i)=>v+sy.values[i])},{name:"Views",color:"#3B82F6",labels:si.labels,values:vi.values.map((v,i)=>v+vy.values[i])},{name:"Engagement",color:"#E1306C",labels:si.labels,values:ei.values,f:"pct"}];
+  const ins=buildInsights();const list=[...ins.working,...ins.next,...ins.growth];
+  const pb=(p,rows)=>`<div class="card"><div class="card-h"><h3 style="display:flex;gap:10px;align-items:center">${pIcon(p,26)}${P_NAME[p]}</h3><button class="btn btn-sm" data-act="plat" data-v="${p}">Open dashboard</button></div><div class="grid g3" style="margin:0">${rows.map(r=>`<div><div class="muted" style="font-size:12.5px">${r.label}</div><div style="font-size:20px;font-weight:700">${fmtV(r.value,r.f)}</div><div class="${r.change>=0?"up":"down"}" style="font-size:12.5px;font-weight:600">${r.change>=0?"↑":"↓"} ${Math.abs(r.change)}%</div></div>`).join("")}</div></div>`;
+  return Header("Here’s how all your accounts are performing.")+
+  `<div class="grid g4">${cards.map(c=>MetricCard(c)).join("")}</div>
+  <div class="grid">${Card("Performance overview",lineChart(perf),`<span class="sub">${rangeLabel()} · lines scaled independently</span>`)}</div>
+  <div class="grid g2">${pb("instagram",[mi[0],mi[1],mi[2]])}${pb("youtube",[my[0],my[1],my[5]])}</div>
+  <div class="grid g2">${TopContent("instagram",3,"Top Instagram Reels")}${TopContent("youtube",3,"Top YouTube videos")}</div>
+  <div class="grid">${Card(`${I("spark",18)} AI suggestions`,!list.length?Empty("spark","Not enough data yet","Publish a few posts and check back."):Insight(list[0])+Locked("coach","Unlock AI Coach",`${list.length-1} more recommendations from your data are ready.`,list.slice(1,4).map(Insight).join(""),{minh:180}),isPro()?'<a href="#/app/coach" style="font-weight:600;font-size:13px">Open AI Coach</a>':"")}</div>`+PremiumRow()}
+
+/* ================= pages ================= */
+function pagePlatform(){return S.platform==="all"?(ui.cPlat||"instagram"):S.platform}
+function PlatSwitch(){if(S.platform!=="all")return"";return`<div class="tabs">${["instagram","youtube"].map(p=>`<button class="${pagePlatform()===p?"on":""}" data-act="cplat" data-v="${p}">${P_NAME[p]}</button>`).join("")}</div>`}
+function Analytics(){const p=pagePlatform();const m=DataService.metrics(p,S.range);
+  const tabs=p==="instagram"?[["overview","Overview"],["engagement","Engagement"],["reach","Reach"],["growth","Growth"]]:[["overview","Overview"],["engagement","Engagement"],["watch","Watch time"],["growth","Subscribers"]];
+  if(!tabs.find(t=>t[0]===ui.anTab))ui.anTab="overview";
+  const primary=p==="instagram"?{overview:"reach",engagement:"engagement",reach:"reach",growth:"followers"}[ui.anTab]:{overview:"views",engagement:"engagement",watch:"watch",growth:"subscribers"}[ui.anTab];
+  const s=DataService.series(p,primary,S.range);const ct=DataService.content(p,S.range);
+  const noDaily=Empty("chart","Daily data isn’t available for this metric",isLiveIG()&&p==="instagram"?"Instagram provides daily values for reach and followers only.":"");
+  const basic=Card(s?`${s.name} over time`:"Over time",s?lineChart([s],{h:240}):noDaily,`<span class="sub">${rangeLabel()}</span>`);
+  const dayRows=s?s.values.map((v,i)=>[s.labels[i],v]).slice(-14).reverse():[];
+  const table=!s?noDaily:`<div class="scroll-x"><table class="t"><thead><tr><th>Date</th><th>${s.name}</th><th>Change</th></tr></thead><tbody>${dayRows.map((r,i)=>{const prev=dayRows[i+1];const ch=prev?((r[1]-prev[1])/prev[1]*100):0;return`<tr><td>${r[0]}</td><td>${fmtV(r[1],s.f)}</td><td class="${ch>=0?"up":"down"}">${prev?(ch>=0?"+":"")+ch.toFixed(1)+"%":"—"}</td></tr>`}).join("")}</tbody></table></div>`;
+  const eb=p==="instagram"?[["Likes",sum(ct,c=>c.likes)],["Comments",sum(ct,c=>c.comments)],["Shares",sum(ct,c=>c.shares)],["Saves",sum(ct,c=>c.saves)]]:[["Likes",sum(ct,c=>c.likes)],["Comments",sum(ct,c=>c.comments)]];
+  const tot=sum(eb,e=>e[1])||1;
+  const hs=isPro()?DataService.series(p,primary,365):asDemo(()=>DataService.series(p,primary,365));
+  const reachSplit=p==="instagram"&&isLiveIG()?Unav("Reach split by followers and non-followers isn’t connected yet."):p==="instagram"?bars([["Followers",38],["Non-followers",62]]):bars([["Browse",34],["Suggested",29],["Search",18],["Shorts feed",14],["External",5]]);
+  return`<div class="ph"><div><h1>Analytics</h1><p>${P_NAME[p]} · ${rangeLabel()}</p></div><div style="display:flex;gap:10px;flex-wrap:wrap">${PlatSwitch()}<div class="tabs">${tabs.map(t=>`<button class="${ui.anTab===t[0]?"on":""}" data-act="antab" data-v="${t[0]}">${t[1]}</button>`).join("")}</div></div></div>
+  <div class="grid g4">${m.slice(0,4).map(x=>MetricCard(x,p)).join("")}</div>
+  <div class="grid">${basic}</div>
+  <div class="grid g2">${Card("Day-by-day breakdown",Locked("growth","Unlock detailed growth analytics","See every day’s numbers and how they changed.",table))}
+  ${Card("Engagement breakdown",Locked("engagement","Unlock detailed engagement","See which actions drive your engagement.",bars(eb.map(e=>[e[0],+(e[1]/tot*100).toFixed(1)]))+'<p class="muted" style="font-size:12px;margin-top:8px">Share of all interactions in this period</p>'))}</div>
+  <div class="grid g2">${Card(p==="instagram"?"Reach by audience type":"Traffic sources",Locked("reach","Unlock advanced reach analysis","Find out where your views come from.",reachSplit))}
+  ${Card("Historical analytics",Locked("history","Unlock 12 months of history","Free accounts can view the last 28 days.",hs?lineChart([hs],{h:180}):Empty("cal","History not loaded","Choose Last 12 months in the date menu to load it.")))}</div>`}
+function Content(){const p=pagePlatform();const nz=x=>x==null?-1:x;let items=DataService.content(p).sort((a,b)=>(nz(a[ui.sort])-nz(b[ui.sort]))*ui.sortDir);const ig=p==="instagram";
+  const lim=L().contentRows;const shown=items.slice(0,lim);
+  const cols=ig?[["views","Views"],["likes","Likes"],["comments","Comments"],["shares","Shares"],["saves","Saves"],["er","Eng. rate"],["ago","Published"]]:[["views","Views"],["likes","Likes"],["comments","Comments"],["watch","Watch time"],["er","Eng. rate"],["change","Change"],["ago","Published"]];
+  const row=c=>`<tr><td class="wrap"><div style="display:flex;gap:10px;align-items:center">${Thumb(c,1)}<div><b style="font-weight:600">${c.permalink?`<a href="${esc(c.permalink)}" target="_blank" rel="noopener" style="color:inherit">${esc(c.title)}</a>`:esc(c.title)}</b><div class="muted" style="font-size:12px">${({reel:"Reel",post:"Post",story:"Story",short:"Short",long:"Video"})[c.type]}</div></div></div></td>${cols.map(k=>`<td>${k[0]==="er"?pct(c.er):k[0]==="ago"?dfmt(c.date):k[0]==="watch"?fmt(c.watch)+" h":k[0]==="change"?`<span class="${c.change>=0?"up":"down"}">${c.change>=0?"+":""}${c.change}%</span>`:fmt(c[k[0]])}</td>`).join("")}</tr>`;
+  const head=`<thead><tr><th>Content</th>${cols.map(k=>`<th class="s" data-act="sort" data-v="${k[0]}">${k[1]}${ui.sort===k[0]?(ui.sortDir<0?" ↓":" ↑"):""}</th>`).join("")}</tr></thead>`;
+  const rest=items.slice(lim);
+  return`<div class="ph"><div><h1>Content</h1><p>Every ${ig?"post, Reel and Story":"video and Short"} with its performance. Sort by any column.</p></div>${PlatSwitch()}</div>
+  <div class="card"><div class="scroll-x"><table class="t">${head}<tbody>${shown.map(row).join("")}</tbody></table></div>
+  ${rest.length?`<div style="margin-top:14px">${Locked("content","Unlock advanced content performance",`See all ${items.length} items, sort by any metric and compare formats.`,`<table class="t"><tbody>${rest.slice(0,3).map(row).join("")}</tbody></table>`,{minh:200})}</div>`:""}</div>`}
+function Audience(){const p=pagePlatform();const {a,loading}=audState(p);
+  const head=`<div class="ph"><div><h1>Audience</h1><p>Who follows and watches you on ${P_NAME[p]}.</p></div>${PlatSwitch()}</div>`;
+  if(loading)return head+`<div class="card">${Loading()}</div>`;
+  const blk=(t,arr,fn)=>Card(t,arr?fn(arr):Unav(p==="instagram"?AUD100:"Not available for this channel."));
+  const body=`<div class="grid g2">${blk("Age",a&&a.age,bars)}${blk("Gender",a&&a.gender,donut)}</div><div class="grid g2">${blk("Top countries",a&&a.countries,bars)}${blk("Top cities",a&&a.cities,bars)}</div><div class="grid g2">${Card("When your audience is online",timeBlock(a))}${Card("Audience interests",Unav(p==="instagram"?DataService.unavailable.instagram.interests:"YouTube doesn’t share viewer interests through its API."))}</div>`;
+  return head+(isPro()?body:Locked("audience","Unlock audience insights","See age, gender, countries, cities and when your audience is online.",body,{minh:520}))}
+function Coach(){const x=buildInsights();
+  const sec=(t,ic,arr)=>arr.length?`<div class="sec-t">${I(ic,18)} ${t}</div>${arr.map(Insight).join("")}`:"";
+  const body=`<div class="grid g2"><div>${sec("Performance summary","chart",x.summary)}${sec("What is working","check",x.working)}</div><div>${sec("What needs improvement","alert",x.improve)}${sec("What to post next","spark",x.next)}${sec("Growth opportunities","trend",x.growth)}</div></div>`;
+  if(!x.summary.length&&!x.working.length&&!x.improve.length&&!x.next.length&&!x.growth.length)return`<div class="ph"><div><h1>AI Coach</h1></div></div><div class="card">${Empty("spark","Not enough data yet","Publish a few posts and check back.")}</div>`;
+  return`<div class="ph"><div><h1>AI Coach</h1><p>Recommendations drawn only from your connected accounts. Each one shows the data it’s based on.</p></div>${isPro()?`<button class="btn" data-act="regen">${I("refresh",16)} Refresh insights</button>`:""}</div>
+  ${isPro()?body:Locked("coach","Unlock AI Coach","Get a summary of what’s working, what to fix and what to post next, based on your data.",body,{minh:520})}
+  <p class="muted" style="font-size:12px;margin-top:6px">AI Coach does not guess beyond your data. If a metric isn’t available from Instagram or YouTube, it won’t be used.</p>`}
+function analyzeCaption(text,tone){
+  const lines=text.trim().split(/\n+/);const first=lines[0]||"";const words=text.trim().split(/\s+/).filter(Boolean);const tags=(text.match(/#\w+/g)||[]);
+  const sentences=text.split(/[.!?]+/).filter(s=>s.trim());const avgS=words.length/(sentences.length||1);
+  const hasCTA=/(comment|save|share|follow|link in bio|tag|subscribe|dm|tell me|let me know|\?)/i.test(text);
+  const hook=Math.min(100,40+(first.length<70?20:0)+(/\d/.test(first)?15:0)+(/\?|!/.test(first)?15:0)+(/(you|your)/i.test(first)?10:0));
+  const clarity=Math.max(30,Math.min(100,110-avgS*3));const length=words.length<8?40:words.length<=120?90:words.length<=200?70:45;
+  const cta=hasCTA?85:30;const eng=Math.round((hook+clarity+length+cta)/4);
+  const toneD=/!|🔥|😍|✨/.test(text)?"Energetic":/(I |my |me )/.test(text)?"Personal":"Informative";
+  const stop=new Set("about above after again their there these those which while would could should with from that this have your what when where into just like more most very really spent morning every minute worth still looked think thing things today going getting today something always never because being other".split(" "));
+  const kws=[...new Set(words.map(w=>w.toLowerCase().replace(/[^a-z]/g,"")).filter(w=>w.length>4&&!stop.has(w)))].slice(0,4);
+  const proper=[...text.matchAll(/(?:^|[^.!?\n]\s)([A-Z][a-z]{3,})/g)].map(m=>m[1]).filter(w=>!stop.has(w.toLowerCase()));
+  const topic=proper[0]||kws.find(w=>!/(ed|ing|ly)$/.test(w))||"this";
+  kws.sort((x,y)=>(proper.map(q=>q.toLowerCase()).includes(y)?1:0)-(proper.map(q=>q.toLowerCase()).includes(x)?1:0));
+  const hooks=[`Nobody tells you this about ${topic}.`,`I almost skipped ${topic}. Glad I didn’t.`,`3 things I wish I knew before ${topic}.`,`Save this if ${topic} is on your list.`];
+  const ctas=["Would you go? Tell me in the comments.","Save this for your next trip.","Send this to the friend you’d go with."];
+  const toneHook={Friendly:hooks[1],Bold:hooks[0],Professional:hooks[2]}[tone]||hooks[0];
+  const body=sentences.slice(0,2).map(s=>s.trim()).join(". ")+".";
+  const hashtags=[...new Set([...proper.map(k=>"#"+k.toLowerCase()),...kws.filter(w=>!/(ed|ing|ly)$/.test(w)).map(k=>"#"+k),"#travelreels","#creatortips"])].slice(0,6);
+  const improved=`${toneHook}\n\n${body}\n\n${hasCTA?ctas[0]:ctas[0]}\n\n${hashtags.join(" ")}`;
+  const notes={Hook:hook>=75?"Strong opener.":"Open with a number, a question or ‘you’ in the first line.",Clarity:clarity>=75?"Easy to read.":"Shorten long sentences.",Length:length>=80?"Good length for Instagram.":words.length<8?"Too short to give context.":"Long. Move detail into a carousel or comment.",CTA:hasCTA?"Has a clear call to action.":"No call to action. Ask for a comment or save.","Engagement potential":eng>=75?"Likely to perform above your average.":"Room to improve.",Tone:toneD};
+  return{scores:[["Hook",hook],["Clarity",Math.round(clarity)],["Length",length],["CTA",cta],["Engagement potential",eng]],tone:toneD,notes,improved,hooks,ctas,hashtags,tags:tags.length};
+}
+function Caption(){const left=isPro()?null:Math.max(0,LIMITS.free.aiGenerationsPerMonth-S.aiUsed);const r=ui.caption;
+  return`<div class="ph"><div><h1>Caption AI</h1><p>Paste a caption. Get a score, a rewrite, new hooks and calls to action.</p></div>${left!==null?`<span class="badge b-trial">${left} of ${LIMITS.free.aiGenerationsPerMonth} free generations left this month</span>`:""}</div>
+  <div class="grid g12"><div class="card"><label class="f" for="cap">Your caption</label><textarea id="cap" class="input" rows="9" maxlength="2200" placeholder="e.g. Spent the morning at Chandratal lake. The water was so still it looked like glass. Got there at 5am and it was worth every minute.">${esc(ui.captionText)}</textarea>
+   <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:end"><div style="flex:1;min-width:140px"><label class="f" for="tone">Tone</label><select id="tone" class="input"><option>Friendly</option><option>Bold</option><option>Professional</option></select></div><button class="btn btn-p" data-act="caption">${I("spark",16)} Improve my caption</button></div>
+   <p class="muted" style="font-size:12px;margin-top:10px">Only the caption text is sent for analysis. No account details are included.</p></div>
+  <div id="capres">${r?CaptionResult(r):`<div class="card">${Empty("pen","Your analysis will appear here","Paste a caption and select Improve my caption.")}</div>`}</div></div>`}
+function CaptionResult(r){return`<div class="card"><div class="card-h"><h3>Analysis</h3><span class="chip static">Tone: ${r.tone}</span></div>${r.scores.map(s=>`<div class="score"><span>${s[0]}</span><div class="bars"><div class="tr"><div class="fill" style="width:${s[1]}%;background:${s[1]>=75?"var(--green)":s[1]>=55?"var(--amber)":"var(--red)"}"></div></div></div><b>${s[1]}</b></div><div class="muted" style="font-size:12px;margin:-4px 0 6px 140px">${r.notes[s[0]]}</div>`).join("")}</div>
+  <div class="card" style="margin-top:18px"><div class="card-h"><h3>Improved caption</h3><button class="btn btn-sm" data-act="copy" data-v="improved">${I("copy",14)} Copy</button></div><div class="box" id="improved">${esc(r.improved)}</div>
+  <div class="sec-t" style="margin-top:18px">Original</div><div class="box muted">${esc(r.original)}</div>
+  <div class="grid g2" style="margin:18px 0 0"><div><div class="sec-t">Alternative hooks</div>${r.hooks.map(h=>`<div class="ins" style="padding:10px"><p>${esc(h)}</p></div>`).join("")}</div><div><div class="sec-t">Call-to-action ideas</div>${r.ctas.map(h=>`<div class="ins" style="padding:10px"><p>${esc(h)}</p></div>`).join("")}<div class="sec-t">Hashtags</div><div class="chips">${r.hashtags.map(h=>`<span class="chip static">${esc(h)}</span>`).join("")}</div></div></div></div>`}
+const NICHES={Travel:["budget trips","hidden villages","high-altitude treks","street food"],Fitness:["home workouts","beginner strength","mobility","meal prep"],Food:["15-minute dinners","street food","baking","budget meals"],Fashion:["capsule wardrobe","thrift finds","work outfits","styling basics"],Business:["first customers","pricing","side hustles","productivity"],Education:["study techniques","exam prep","language learning","explainers"],Gaming:["beginner guides","settings tips","hidden features","setup tours"],Technology:["phone tips","AI tools","desk setups","budget gadgets"],Lifestyle:["morning routines","home organisation","slow living","weekly resets"],Beauty:["skincare routines","drugstore dupes","5-minute makeup","ingredients"]};
+function genIdeas(niche){const t=NICHES[niche];const ig=S.connected.instagram?DataService.content("instagram"):[];const reels=ig.filter(c=>c.type==="reel"),posts=ig.filter(c=>c.type==="post");
+  const reelWhy=reels.length&&posts.length?`Your Reels average ${fmt(avg(reels,vw))} views vs ${fmt(avg(posts,vw))} for posts.`:"Short video is the format your connected account reaches most people with.";
+  const saveWhy=posts.length?`Your list-style posts get the most saves per view on your account.`:"Lists are easy to save and revisit.";
+  const yt=S.connected.youtube;
+  return[
+    {hook:`Everyone gets ${t[0]} wrong. Here’s what actually works.`,concept:`Bust 3 common myths about ${t[0]}, one per scene, with your own example for each.`,format:"Reel (20–30 s)",caption:`Myth #2 surprised me the most. Which one did you believe?`,cta:"Comment the myth you believed",why:reelWhy},
+    {hook:`The ${t[1]} checklist I wish I had.`,concept:`A 7-slide carousel: one practical tip per slide, ending with a summary slide.`,format:"Carousel",caption:`Save this for later. Slide 5 is the one most people skip.`,cta:"Save for later",why:saveWhy},
+    {hook:`What ${t[2]} really costs.`,concept:`An honest breakdown with real numbers on screen. Finish with what you’d change.`,format:yt?"YouTube long-form (8–12 min)":"Reel (45 s)",caption:`Full breakdown in the video. Did this match what you expected?`,cta:"Ask a question in the comments",why:yt?"Long-form drives most of your YouTube watch time.":reelWhy},
+    {hook:`I tried ${t[3]} for 7 days.`,concept:`A day-by-day mini series with one clear takeaway per day.`,format:"Reel series",caption:`Day 1 of 7. Follow along to see if it’s worth it.`,cta:"Follow for day 2",why:"Series give people a reason to come back and follow."},
+    {hook:`Don’t start ${t[0]} before watching this.`,concept:`Three mistakes and the fix for each, filmed in one location.`,format:yt?"YouTube Short":"Reel (15 s)",caption:`Mistake 3 cost me the most. Have you made it?`,cta:"Share with someone who needs this",why:yt?"Your Shorts average more views than long-form uploads.":reelWhy},
+    {hook:`Behind the scenes of my most-viewed post.`,concept:`Show how you planned, shot and edited it. Raw clips next to the final cut.`,format:"Reel or Story sequence",caption:`It took 4 attempts. Here’s what changed.`,cta:"DM me ‘edit’ for my settings",why:ig.length?`Your top post has ${fmt(Math.max(...ig.map(vw)))} views, so people already know it.`:"Behind-the-scenes content builds trust."}]}
+function Ideas(){const ideas=ui.ideas||genIdeas(ui.niche);
+  const list=`<div class="grid g2">${ideas.map((d,i)=>`<div class="card idea"><div class="card-h"><h3 style="font-size:15px">${esc(d.hook)}</h3><button class="btn btn-sm" data-act="saveidea" data-v="${i}">${I("bookmark",14)} Save</button></div><span class="chip static">${esc(d.format)}</span><dl><dt>Concept</dt><dd>${esc(d.concept)}</dd><dt>Caption idea</dt><dd>${esc(d.caption)}</dd><dt>CTA</dt><dd>${esc(d.cta)}</dd><dt>Why it may work</dt><dd>${esc(d.why)}</dd></dl></div>`).join("")}</div>`;
+  return`<div class="ph"><div><h1>Content ideas</h1><p>Pick a niche. Ideas are shaped by what already works on your connected accounts.</p></div></div>
+  <div class="card" style="margin-bottom:18px"><div class="chips">${Object.keys(NICHES).map(n=>`<button class="chip ${ui.niche===n?"on":""}" data-act="niche" data-v="${n}">${n}</button>`).join("")}</div></div>
+  ${isPro()?list:Locked("ideas","Unlock content ideas","Get hooks, formats, captions and CTAs for your niche.",list,{minh:500})}`}
+function compData(handle,platform){const R=rng(handle.toLowerCase()+platform);return{handle,platform,followers:Math.round(60000+R()*340000),growth:+(2+R()*18).toFixed(1),avgViews:Math.round(80000+R()*600000),er:+(2.2+R()*4.5).toFixed(1),perWeek:+(2+R()*5).toFixed(1),topFormat:platform==="instagram"?(R()>.4?"Reels":"Carousels"):(R()>.5?"Shorts":"Long-form"),top:["Weekend in the Dolomites","Cheapest way to see Iceland","5 cafés in Copenhagen","Paris on €50 a day"][Math.floor(R()*4)],trend:Array.from({length:12},(_,i)=>1+i*.03+R()*.08)}}
+function Competitors(){const mp=S.connected.instagram?"instagram":"youtube";const pr=DataService.profile(mp);const mc=DataService.content(mp).filter(c=>c.type!=="story");const mm=DataService.metrics(mp,28);
+  const fmtCount={};mc.forEach(c=>fmtCount[c.type]=(fmtCount[c.type]||0)+1);const topType=Object.entries(fmtCount).sort((a,b)=>b[1]-a[1])[0];const TN={reel:"Reels",post:"Posts",short:"Shorts",long:"Long-form"};
+  const best=[...mc].sort((a,b)=>vw(b)-vw(a))[0];const fg=mm.find(x=>x.key==="followers"||x.key==="subscribers"),eg=mm.find(x=>x.key==="engagement");
+  const mine={handle:mp==="instagram"?"@"+pr.handle:pr.name,followers:pr.followers??pr.subscribers,growth:fg?fg.change:null,avgViews:mc.length?Math.round(avg(mc,vw)):null,er:eg?eg.value:null,perWeek:+(DataService.content(mp,28).length/4).toFixed(1),topFormat:topType?TN[topType[0]]||topType[0]:"—",top:best?best.title:"—",trend:Array.from({length:12},(_,i)=>1+i*.04)};
+  const comps=isPro()?S.competitors.map(c=>compData(c.handle,c.platform)):[compData("wanderlust.eu","instagram"),compData("nordic.trails","instagram")];
+  const all=[{...mine,you:true},...comps];
+  const rows=[["Followers / subscribers",x=>fmt(x.followers)],["Growth (28 days)",x=>x.growth==null?"—":(x.growth>=0?"+":"")+x.growth+"%"],["Average views",x=>fmt(x.avgViews)],["Engagement rate",x=>pct(x.er)],["Posts per week",x=>x.perWeek],["Top format",x=>x.topFormat],["Top content",x=>esc(x.top)],["Trend",x=>x.you&&isLiveIG()?"—":`<div style="width:110px;height:34px">${spark(x.trend,x.you?"#7C5CFF":"#A5A2BD")}</div>`]];
+  const table=`<div class="scroll-x"><table class="t"><thead><tr><th></th>${all.map(x=>`<th>${x.you?"You":esc(x.handle)}${x.you?"":` <button class="btn btn-ghost btn-sm" data-act="rmcomp" data-v="${esc(x.handle)}" aria-label="Remove ${esc(x.handle)}">${I("x",13)}</button>`}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><td class="muted">${r[0]}</td>${all.map(x=>`<td>${r[1](x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const ai=comps.length?(()=>{const out={diff:[],works:[],differs:[],test:[]};comps.forEach(c=>{const h=c.handle;
+    if(mine.perWeek==null)out.diff.push(`${h} posts ${c.perWeek} times a week.`);else if(c.perWeek>mine.perWeek)out.diff.push(`${h} posts ${c.perWeek} times a week, you post ${mine.perWeek}.`);else out.diff.push(`You post more often than ${h} (${mine.perWeek} vs ${c.perWeek} a week).`);
+    out.works.push(`${h}’s strongest public post is “${c.top}”, a ${c.topFormat.toLowerCase()} piece.`);
+    out.differs.push(mine.er==null?`${h} has ${pct(c.er)} public engagement.`:c.er>mine.er?`${h} has higher public engagement (${pct(c.er)} vs ${pct(mine.er)}).`:`Your engagement (${pct(mine.er)}) is above ${h}’s (${pct(c.er)}).`);
+    out.test.push(c.topFormat!==mine.topFormat?`Test ${c.topFormat.toLowerCase()} — it’s ${h}’s top format and you rarely use it.`:`Try a piece on a topic similar to “${c.top}”, ${h}’s strongest post.`)});
+    const s=(t,a)=>`<div class="sec-t">${t}</div>${a.map(x=>`<div class="ins" style="padding:11px"><p>${esc(x)}</p></div>`).join("")}`;
+    return`<div class="grid g2">${Card(`${I("spark",18)} What they are doing differently`,s("Differences",out.diff)+s("What performs well for them",out.works))}${Card("Where your content differs",s("Comparison",out.differs)+s("What you could test",out.test))}</div>`})():"";
+  const form=`<div class="card" style="margin-bottom:18px"><div class="card-h"><h3>Add a competitor</h3><span class="sub">${S.competitors.length} of ${LIMITS.pro.competitors} used</span></div><div style="display:flex;gap:10px;flex-wrap:wrap"><select id="cplat" class="input" style="width:150px">${S.connected.instagram?'<option value="instagram">Instagram</option>':""}${S.connected.youtube?'<option value="youtube">YouTube</option>':""}</select><input id="chandle" class="input" style="flex:1;min-width:180px" placeholder="@username or channel name" maxlength="40"><button class="btn btn-p" data-act="addcomp">${I("plus",16)} Add</button></div><p class="muted" style="font-size:12px;margin-top:8px">Only public data is used: follower counts, public posts and their public likes, comments and views. Private insights of other accounts are never available.</p></div>`;
+  const body=table;
+  return`<div class="ph"><div><h1>Competitor analysis</h1><p>Compare your account with up to 2 public profiles or channels.</p></div></div>
+  ${isLiveIG()?`<div class="demobar" style="background:var(--amberbg);border-color:var(--amber)">${I("info",16)} Your column uses live data. Competitor figures are sample data for now: looking up other accounts needs Instagram’s Business Discovery API, which requires Facebook Login.</div>`:""}
+  ${isPro()?form+(comps.length?Card("Comparison",body)+`<div style="margin-top:18px">${ai}</div>`:`<div class="card">${Empty("target","No competitors yet","Add a public username or channel to start comparing.")}</div>`):Locked("competitors","Unlock competitor analysis","Compare growth, views, engagement and formats with up to 2 creators.",Card("Comparison",body),{minh:420})}`}
+function reportData(){const rows=[["Section","Platform","Metric","Value","Change"]];["instagram","youtube"].filter(p=>S.connected[p]).forEach(p=>{DataService.metrics(p,S.range).forEach(m=>rows.push(["Overview",P_NAME[p],m.label,fmtV(m.value,m.f),m.change+"%"]));DataService.content(p,S.range).sort((a,b)=>b.views-a.views).slice(0,5).forEach(c=>rows.push(["Top content",P_NAME[p],c.title,c.views,c.change+"%"]))});return rows}
+function Reports(){const ins=buildInsights();const plats=["instagram","youtube"].filter(p=>S.connected[p]);
+  const preview=`<div class="card" id="report"><div class="card-h"><div><h3>Performance report</h3><div class="sub">${esc(S.user.name)} · ${rangeLabel()} · generated ${dfmt(new Date())}</div></div><span class="chip static">${isLiveIG()?"Live Instagram data":"Demo data"}</span></div>
+   ${plats.map(p=>`<div class="sec-t">${pIcon(p)} ${P_NAME[p]} overview</div><div class="grid g4">${DataService.metrics(p,S.range).slice(0,4).map(m=>`<div class="ins" style="display:block"><div class="muted" style="font-size:12px">${m.label}</div><b style="font-size:18px">${fmtV(m.value,m.f)}</b> <span class="${m.change>=0?"up":"down"}" style="font-size:12px">${m.change>=0?"+":""}${m.change}%</span></div>`).join("")}</div>
+   <div class="sec-t">Top content</div>${DataService.content(p,S.range).sort((a,b)=>b.views-a.views).slice(0,3).map(ContentRow).join("")}`).join("")}
+   <div class="sec-t" style="margin-top:12px">Audience</div>${(()=>{const {a}=audState(plats[0]);return a&&a.countries?bars(a.countries.slice(0,4)):Unav("Audience data isn’t loaded.")})()}
+   <div class="sec-t">Recommendations</div>${[...ins.next,...ins.growth].slice(0,3).map(Insight).join("")}</div>`;
+  return`<div class="ph"><div><h1>Reports</h1><p>Overview, growth, engagement, top content, audience and AI recommendations in one report.</p></div>
+  <div style="display:flex;gap:8px">${isPro()?`<button class="btn" data-act="csv">${I("copy",16)} Copy CSV</button><button class="btn btn-p" data-act="print">${I("print",16)} Save as PDF</button>`:`<button class="btn" data-act="upgrade" data-v="reports">${I("lock",15)} Export CSV</button><button class="btn btn-p" data-act="upgrade" data-v="reports">${I("lock",15)} Export PDF</button>`}</div></div>
+  ${isPro()?preview:Locked("reports","Unlock advanced reports","Download PDF and CSV reports with AI recommendations.",preview,{minh:500})}`}
+function Saved(){const body=S.saved.length?`<div class="grid g2">${S.saved.map((d,i)=>`<div class="card idea"><div class="card-h"><h3 style="font-size:15px">${esc(d.hook)}</h3><button class="btn btn-sm btn-ghost btn-danger" data-act="unsave" data-v="${i}" aria-label="Remove">${I("trash",15)}</button></div><span class="chip static">${esc(d.format)}</span><dl><dt>Concept</dt><dd>${esc(d.concept)}</dd><dt>CTA</dt><dd>${esc(d.cta)}</dd></dl></div>`).join("")}</div>`:`<div class="card">${Empty("bookmark","Nothing saved yet","Save ideas from Content ideas to keep them here.",'<a class="btn btn-p" style="margin-top:14px" href="#/app/ideas">Open content ideas</a>')}</div>`;
+  return`<div class="ph"><div><h1>Saved</h1><p>Ideas you want to come back to.</p></div></div>${isPro()?body:Locked("saved","Unlock saved ideas","Keep your best content ideas in one place.",`<div class="grid g2">${genIdeas("Travel").slice(0,2).map(d=>`<div class="card"><h3>${esc(d.hook)}</h3><p class="muted">${esc(d.concept)}</p></div>`).join("")}</div>`,{minh:260})}`}
+function PricingCards(ctx){const P=PRICES[S.currency];const y=S.cycle==="yearly";const cur=isPro();
+  return`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px"><div class="seg"><button class="${y?"":"on"}" data-act="cycle" data-v="monthly">Monthly</button><button class="${y?"on":""}" data-act="cycle" data-v="yearly">Yearly · save ${Math.round((1-P.y/(P.m*12))*100)}%</button></div><div class="seg">${Object.keys(PRICES).map(c=>`<button class="${S.currency===c?"on":""}" data-act="currency" data-v="${c}">${c}</button>`).join("")}</div></div>
+  <div class="grid g2" style="max-width:820px">
+   <div class="card price-card"><h3>Free</h3><div class="price">${P.sym}0 <small>forever</small></div><p class="muted">See how your account is doing.</p><ul class="checks" style="margin:0">${["1 Instagram + 1 YouTube account","Core metrics with trend","Last 7 or 28 days","Top 5 content items","3 AI captions a month"].map(x=>`<li><span class="ck">${I("check",13)}</span>${x}</li>`).join("")}</ul>${ctx==="landing"?'<a class="btn btn-lg" href="#/signup">Start free</a>':cur?'<button class="btn" data-act="cancel">Downgrade to Free</button>':'<button class="btn" disabled>Current plan</button>'}</div>
+   <div class="card price-card hl"><h3 style="display:flex;gap:8px;align-items:center">Pro <span class="tag-pro">MOST POPULAR</span></h3><div class="price">${P.sym}${y?P.y:P.m} <small>/ ${y?"year":"month"}${y?` · ${P.sym}${(P.y/12).toFixed(2)}/mo`:""}</small></div><p class="muted">Understand what drives your growth.</p><ul class="checks" style="margin:0">${["Up to 5 accounts per platform","12 months of history","Audience & best time to post","AI Coach, Caption AI, Content ideas","Competitor analysis (2 accounts)","PDF & CSV reports"].map(x=>`<li><span class="ck">${I("check",13)}</span>${x}</li>`).join("")}</ul>${ctx==="landing"?'<a class="btn btn-p btn-lg" href="#/signup">Start 7-day free trial</a>':cur?`<button class="btn btn-p" data-act="switchcycle">${S.cycle==="monthly"?"Switch to yearly":"Switch to monthly"}</button>`:'<button class="btn btn-p" data-act="checkout">Start 7-day free trial</button>'}</div></div>
+  <p class="muted" style="font-size:12px;margin-top:10px">Prices include VAT where applicable. Billed in ${S.currency}. Cancel anytime.</p>`}
+function Settings(){const t=ui.setTab;const tabs=[["accounts","Connected accounts"],["billing","Billing"],["usage","Usage"],["profile","Profile"]];let body="";
+  if(t==="accounts")body=["instagram","youtube"].map(p=>{const c=S.connected[p];const pr=DataService.profile(p);return`<div class="card" style="margin-bottom:14px"><div class="acc">${pr&&pr.pic?`<img src="${esc(pr.pic)}" alt="" width="44" height="44" style="border-radius:50%;object-fit:cover" referrerpolicy="no-referrer">`:pIcon(p,44)}<div class="meta">${c?`<b>${p==="instagram"?"@"+esc(pr.handle||"instagram"):esc(pr.name)}</b><div class="muted" style="font-size:13px">${p==="instagram"?fmt(pr.followers)+" followers":fmt(pr.subscribers)+" subscribers"} · <span class="stat-ok">Connected</span> · ${p==="instagram"&&isLiveIG()?"live data":"demo data"}</div><div class="muted" style="font-size:12px;margin-top:4px">Access renews automatically. Permissions: ${p==="instagram"?"instagram_business_basic, instagram_business_manage_insights":"youtube.readonly, yt-analytics.readonly"}</div>`:`<b>${P_NAME[p]}</b><div class="muted" style="font-size:13px">Not connected</div>`}</div>
+    <div style="display:flex;gap:8px">${c?`<button class="btn btn-sm" data-act="reconnect" data-v="${p}">${I("refresh",14)} Reconnect</button><button class="btn btn-sm btn-danger" data-act="disconnect" data-v="${p}">Disconnect</button>`:`<button class="btn btn-p btn-sm" data-act="connect" data-v="${p}">Connect ${P_NAME[p]}</button>`}</div></div></div>`}).join("")+`<p class="muted" style="font-size:12.5px">Free plans connect 1 account per platform. Pro connects up to 5. Tokens are stored encrypted on the server and never sent to your browser.</p>`;
+  if(t==="billing")body=`<div class="card" style="margin-bottom:18px"><div class="acc"><div class="meta"><div class="muted" style="font-size:12.5px">Current plan</div><div style="display:flex;gap:10px;align-items:center;margin-top:4px"><b style="font-size:18px">${isPro()?"Pro "+(S.cycle==="yearly"?"Yearly":"Monthly"):"Free"}</b>${Badge()}</div><div class="muted" style="font-size:13px;margin-top:4px">${S.subStatus==="trial"?"Trial ends in 7 days. You won’t be charged before then.":S.subStatus==="active"?"Renews on "+dfmt(new Date(Date.now()+(S.cycle==="yearly"?365:30)*864e5)):S.subStatus==="cancelled"?"Your Pro access has ended.":S.subStatus==="past_due"?"Payment failed. We’ll retry in 3 days.":"No subscription."}</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${isPro()?`<button class="btn btn-sm" data-act="portal">Update payment method</button><button class="btn btn-sm btn-danger" data-act="cancel">Cancel subscription</button>`:S.subStatus==="cancelled"?'<button class="btn btn-p btn-sm" data-act="checkout">Resume Pro</button>':'<button class="btn btn-p btn-sm" data-act="checkout">Upgrade to Pro</button>'}</div></div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px" class="muted">Demo: simulate subscription state <select class="input" style="width:auto;padding:5px 8px" data-act-change="substatus">${["free","trial","active","past_due","cancelled"].map(s=>`<option value="${s}" ${S.subStatus===s?"selected":""}>${s.replace("_"," ")}</option>`).join("")}</select></div></div>
+    ${PricingCards("app")}
+    <div class="card" style="margin-top:18px"><div class="card-h"><h3>Invoices</h3></div>${isPro()||S.subStatus==="cancelled"?`<table class="t"><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>${dfmt(dAgo(2))}</td><td>Pro ${S.cycle}</td><td>${PRICES[S.currency].sym}${S.subStatus==="trial"?"0.00":(S.cycle==="yearly"?PRICES[S.currency].y:PRICES[S.currency].m).toFixed(2)}</td><td>${S.subStatus==="past_due"?'<span class="down">Failed</span>':'<span class="up">Paid</span>'}</td></tr></tbody></table>`:Empty("file","No invoices yet","Invoices appear here after your first payment.")}</div>`;
+  if(t==="usage"){const lim=L();const used=[["AI generations this month",S.aiUsed,lim.aiGenerationsPerMonth],["Instagram accounts",S.connected.instagram?1:0,lim.accountsPerPlatform],["YouTube accounts",S.connected.youtube?1:0,lim.accountsPerPlatform],["Competitors tracked",S.competitors.length,lim.competitors]];
+    body=`<div class="card">${used.map(u=>`<div class="score" style="grid-template-columns:200px 1fr 80px"><span>${u[0]}</span><div class="bars"><div class="tr"><div class="fill" style="width:${u[2]?Math.min(100,u[1]/u[2]*100):0}%"></div></div></div><b>${u[1]} / ${u[2]}</b></div>`).join("")}<p class="muted" style="font-size:12.5px;margin-top:12px">History available: up to ${Math.max(...lim.ranges)} days. Limits are configured on the server (usage_limits table) and can change without a redeploy.</p></div>`}
+  if(t==="profile")body=`<div class="card" style="max-width:560px"><label class="f" for="pn">Name</label><input id="pn" class="input" value="${esc(S.user.name)}" maxlength="60"><div style="height:14px"></div><label class="f" for="pe">Email</label><input id="pe" class="input" type="email" value="${esc(S.user.email)}"><div style="height:14px"></div><label class="f" for="pr">Billing region</label><select id="pr" class="input">${REGIONS.map(r=>`<option value="${r[0]}" ${S.region===r[0]?"selected":""}>${r[1]} (${r[2]})</option>`).join("")}</select><p class="muted" style="font-size:12px;margin-top:6px">Sets the currency on pricing and invoices.</p><button class="btn btn-p" style="margin-top:16px" data-act="saveprofile">Save changes</button>
+   <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--line)"><b>Theme</b><div class="seg" style="margin-top:8px">${["system","light","dark"].map(m=>`<button class="${(document.documentElement.dataset.theme||"system")===m?"on":""}" data-act="theme" data-v="${m}">${m[0].toUpperCase()+m.slice(1)}</button>`).join("")}</div></div></div>`;
+  return`<div class="ph"><div><h1>Settings</h1><p>Accounts, billing and preferences.</p></div></div><div class="tabs" style="margin-bottom:18px;flex-wrap:wrap">${tabs.map(x=>`<button class="${t===x[0]?"on":""}" data-act="settab" data-v="${x[0]}">${x[1]}</button>`).join("")}</div>${body}`}
+
+/* ================= admin ================= */
+function Admin(){const k=[["Total users",18420,"users"],["Free users",16380,"users"],["Pro users",2040,"crown"],["Active subscriptions",1912,"check"],["Monthly recurring revenue","£24,860","trend"],["New users (30 days)",2310,"plus"],["Churn (30 days)","3.4%","down"],["Instagram accounts",15210,"ig"],["YouTube accounts",7980,"yt"],["AI generations (30 days)",61400,"spark"],["API errors (24 h)",37,"alert"],["Trials in progress",286,"clock"]];
+  const R=rng("admin");const s={name:"Sign-ups",color:"#7C5CFF",labels:Array.from({length:30},(_,i)=>dshort(dAgo(29-i))),values:Array.from({length:30},(_,i)=>50+i*1.6+R()*25)};
+  const errs=[["instagram","OAUTH_TOKEN_EXPIRED","user_7f2a","Asked user to reconnect"],["youtube","QUOTA_EXCEEDED","system","Backed off, retry in 15 min"],["instagram","PERMISSION_MISSING: instagram_business_manage_insights","user_19cc","Marked insights unavailable"],["instagram","RATE_LIMITED (code 4)","user_a01e","Retried after 60 s"]];
+  return`<div style="max-width:1300px;margin:0 auto;padding:24px"><div class="ph"><div><a href="#/app/dashboard" style="font-weight:600">${I("arrow",14).replace("M5 12h14M13 6l6 6-6 6","M19 12H5M11 6l-6 6 6 6")} Back to app</a><h1 style="margin-top:8px">Admin</h1><p>Platform health. Demo figures.</p></div></div>
+  <div class="grid g4">${k.map(x=>`<div class="card metric"><div class="mic t-violet">${I(x[2],20)}</div><div><div class="lab">${x[0]}</div><div class="val">${typeof x[1]==="number"?x[1].toLocaleString("en-GB"):x[1]}</div></div></div>`).join("")}</div>
+  <div class="grid g21">${Card("New sign-ups",lineChart([s],{h:220}),'<span class="sub">Last 30 days</span>')}${Card("Plan mix",donut([["Free",89],["Pro monthly",7],["Pro yearly",4]]))}</div>
+  ${Card("Recent API errors",`<div class="scroll-x"><table class="t"><thead><tr><th>Platform</th><th>Error</th><th>Account</th><th>Handled by</th></tr></thead><tbody>${errs.map(e=>`<tr><td>${pIcon(e[0],20)}</td><td><code>${e[1]}</code></td><td>${e[2]}</td><td>${e[3]}</td></tr>`).join("")}</tbody></table></div>`)}</div>`}
+
+/* ================= public pages ================= */
+const ARTICLES=[{slug:"instagram-engagement-rate",title:"How to calculate your Instagram engagement rate (and what’s good in 2026)",date:"2026-09-18",tag:"Instagram analytics",read:6,ex:"Engagement rate is the one number most creators quote and few calculate the same way. Here’s a consistent method.",body:["There are two common formulas: interactions divided by followers, and interactions divided by reach. The second is fairer for accounts with many inactive followers, because it only counts people who actually saw the post.","Interactions should include likes, comments, shares and saves. Saves and shares carry more intent than likes, so it’s worth tracking them separately too.","A useful habit is to compare each post with your own 90-day average rather than with other accounts. Your audience, niche and format mix make outside benchmarks rough at best."]},
+{slug:"youtube-analytics-for-small-channels",title:"YouTube analytics for small channels: the 4 numbers to watch",date:"2026-09-02",tag:"YouTube analytics",read:5,ex:"Views aren’t the whole story. Watch time, average view duration, click-through rate and returning viewers tell you more.",body:["Watch time is how long people spend on your videos in total. It reflects both how many people click and how long they stay.","Average view duration shows whether your video keeps its promise. A sharp drop in the first 30 seconds usually points to the intro, not the topic.","Shorts and long-form behave differently. Compare them separately so one doesn’t hide problems in the other."]},
+{slug:"competitor-analysis-for-creators",title:"Competitor analysis for creators, without copying anyone",date:"2026-08-21",tag:"Creator growth",read:7,ex:"Looking at similar accounts can show you formats and topics to test. Here’s how to do it using public data only.",body:["Pick two accounts slightly ahead of you in your niche, not the biggest names. Their audience is closest to the one you’re building.","Compare posting frequency, formats and which public posts outperform their own average. You’re looking for patterns, not posts to copy.","Turn each pattern into one test for your own account, and give it at least three posts before judging it."]}];
+function LNav(){return`<header class="lp-nav"><a class="brand" href="#/">${LOGO}Nexlytics</a><nav class="links"><a href="#/" data-scroll="features">Features</a><a href="#/" data-scroll="pricing">Pricing</a><a href="#/blog">Blog</a><a href="#/" data-scroll="faq">FAQ</a></nav><span style="flex:1"></span>${S.authed?'<a class="btn" href="#/app/dashboard">Open dashboard</a>':'<a class="btn btn-ghost hide-m" href="#/login">Sign in</a><a class="btn btn-p" href="#/signup">Start free</a>'}</header>`}
+function Footer(){return`<footer class="foot"><div class="wrap"><div class="cols"><div><div class="brand" style="padding:0 0 10px">${LOGO}Nexlytics</div><p style="font-size:13px;max-width:34ch">Instagram and YouTube analytics with AI insights, for creators and small businesses across the UK and Europe.</p></div><div><h5>Product</h5><a href="#/" data-scroll="features">Features</a><a href="#/" data-scroll="pricing">Pricing</a><a href="#" data-act="demo">Live demo</a></div><div><h5>Resources</h5><a href="#/blog">Blog</a>${ARTICLES.slice(0,2).map(a=>`<a href="#/blog/${a.slug}">${a.tag}</a>`).join("")}</div><div><h5>Company</h5><a href="#/">Privacy policy</a><a href="#/">Terms</a><a href="#/">GDPR & data</a></div></div><p style="font-size:12px;margin-top:32px;opacity:.7">© 2026 Nexlytics. Instagram and YouTube are trademarks of their respective owners. Nexlytics is not affiliated with Meta or Google.</p></div></footer>`}
+function heroInsight(){const ig=asDemo(()=>DataService.content("instagram"));const r=ig.filter(c=>c.type==="reel"),po=ig.filter(c=>c.type==="post");return{t:`Reels get ${(avg(r,c=>c.views)/avg(po,c=>c.views)).toFixed(1)}× more views than static posts on this account.`,b:`${r.length} Reels vs ${po.length} posts`,i:"spark",tone:"t-violet"}}
+function Landing(){const m=DataService.metrics("instagram",28);
+  const feats=[["ig","Instagram analytics","Followers, reach, engagement and Reels views, with every post ranked."],["yt","YouTube analytics","Subscribers, views, watch time and how Shorts compare with long-form."],["spark","AI Coach","Plain-language advice on what’s working, built only from your numbers."],["pen","Caption AI","Score a caption, then get a stronger hook, CTA and hashtags."],["target","Competitor analysis","Compare growth and formats with 2 public accounts in your niche."],["file","Reports","PDF and CSV reports for clients, brands or your own records."]];
+  return`<div class="lp">${LNav()}
+  <section class="hero wrap"><div><h1>Understand your social media. Grow with data.</h1><p class="lead">One dashboard for Instagram and YouTube analytics, AI-powered insights, and creator growth.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-p btn-lg" href="#/signup">Start free</a><button class="btn btn-lg" data-act="demo">${I("play",16)} View demo</button></div><p class="note">Free forever plan. No card needed. Connect with official Instagram and Google sign-in.</p></div>
+   <div class="stage" aria-label="Product preview"><div class="grid g2" style="margin-bottom:14px">${m.slice(0,2).map(x=>MetricCard(x,"instagram")).join("")}</div><div class="card">${lineChart(["followers","reach"].map(k=>DataService.series("instagram",k,28)),{h:150})}</div>
+   <div class="float card">${Insight(heroInsight()).replace('class="ins"','class="ins" style="border:0;padding:0;margin:0"')}</div></div></section>
+  <section class="sect"><div class="wrap"><h2>From connected to clear in four steps</h2><p class="intro">Sign in with Instagram or Google. Nexlytics reads your analytics through the official APIs and never posts for you.</p>
+   <div class="steps">${[["Connect your accounts","Link Instagram, YouTube or both through official sign-in."],["Understand your performance","See what grew, what dropped and which posts drove it."],["Get AI recommendations","AI Coach turns your numbers into specific next steps."],["Grow your content","Test ideas, track results and compare with your niche."]].map(s=>`<div class="step"><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join("")}</div></div></section>
+  <section class="sect" id="features"><div class="wrap"><h2>Everything a creator checks, in one place</h2><p class="intro">Switch between Instagram, YouTube and a combined view. Free shows the essentials. Pro shows why.</p>
+   <div class="grid g3">${feats.map(f=>`<div class="card feat"><div class="mic t-violet">${I(f[0],20)}</div><h3>${f[1]}</h3><p>${f[2]}</p></div>`).join("")}</div></div></section>
+  <section class="sect" id="pricing"><div class="wrap"><h2>Simple pricing in pounds, euros or dollars</h2><p class="intro">Start free. Upgrade when you want deeper insight. Cancel anytime from your billing page.</p>${PricingCards("landing")}</div></section>
+  <section class="sect" id="faq"><div class="wrap"><h2>Questions</h2><div class="faq" style="margin-top:24px;max-width:780px">${[["Is my data real?","Once connected, yes. Numbers come straight from the Instagram and YouTube APIs. The demo uses clearly labelled sample data."],["Do I need an Instagram Business or Creator account?","Yes. Instagram only shares insights for professional accounts. Switching is free in the Instagram app."],["Can Nexlytics post or change anything on my account?","No. We request read-only analytics permissions."],["What happens if a metric isn’t available?","We show it as unavailable and explain why, rather than estimating it."],["How does competitor analysis work?","It uses public information only: follower counts and public posts with their public likes, comments and views."],["Is my data stored in Europe?","Data is stored in EU-region infrastructure and handled under GDPR. You can delete your account and data at any time."]].map(q=>`<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}</div></div></section>
+  ${Footer()}</div>`}
+function Blog(slug){const a=slug&&ARTICLES.find(x=>x.slug===slug);
+  if(a)return`<div class="lp">${LNav()}<article class="article"><a href="#/blog" style="font-weight:600">All articles</a><p class="muted" style="font-size:13px;margin:20px 0 8px">${a.tag} · ${a.read} min read · ${dfmt(new Date(a.date))}</p><h1 style="font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.15;margin-bottom:24px">${a.title}</h1>${a.body.map(p=>`<p>${p}</p>`).join("")}<div class="card" style="margin-top:32px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b>See these numbers for your account</b><p class="muted">Connect Instagram or YouTube for free.</p></div><a class="btn btn-p" href="#/signup">Start free</a></div></article>${Footer()}</div>`;
+  return`<div class="lp">${LNav()}<div class="wrap" style="padding:48px 24px 80px"><h1 style="font-size:40px;letter-spacing:-.03em">Blog</h1><p class="muted" style="margin:8px 0 32px;font-size:16px">Guides on Instagram analytics, YouTube growth and content strategy.</p><div class="grid g3">${ARTICLES.map(a=>`<a class="card" href="#/blog/${a.slug}" style="color:inherit;display:block"><span class="chip static">${a.tag}</span><h3 style="margin:14px 0 8px;font-size:17px;line-height:1.35">${a.title}</h3><p class="muted" style="font-size:13.5px">${a.ex}</p><p class="muted" style="font-size:12px;margin-top:12px">${a.read} min read</p></a>`).join("")}</div></div>${Footer()}</div>`}
+function Auth(mode){const up=mode==="signup";return`<div class="auth"><div class="card"><a class="brand" href="#/" style="color:var(--ink);padding:0 0 22px">${LOGO}Nexlytics</a><h2 style="font-size:22px">${up?"Create your free account":"Welcome back"}</h2><p class="muted" style="margin:6px 0 20px">${up?"Free forever. No card needed.":"Sign in to see your dashboard."}</p>
+  <button class="btn" style="width:100%;margin-bottom:14px" data-act="auth">${I("shield",16)} Continue with Google</button><div class="muted" style="text-align:center;font-size:12px;margin-bottom:14px">or with email</div>
+  ${up?'<label class="f" for="an">Name</label><input id="an" class="input" autocomplete="name" placeholder="Arvind" maxlength="60"><div style="height:12px"></div>':""}<label class="f" for="ae">Email</label><input id="ae" class="input" type="email" autocomplete="email" placeholder="you@example.com"><div style="height:12px"></div><label class="f" for="ap">Password</label><input id="ap" class="input" type="password" autocomplete="${up?"new-password":"current-password"}" placeholder="At least 8 characters"><p id="aerr" class="down" style="font-size:12.5px;min-height:18px;margin-top:6px" role="alert"></p>
+  <button class="btn btn-p btn-lg" style="width:100%" data-act="auth" data-v="email">${up?"Create account":"Sign in"}</button><p class="muted" style="font-size:13px;text-align:center;margin-top:16px">${up?'Already have an account? <a href="#/login">Sign in</a>':'New here? <a href="#/signup">Create an account</a>'}</p></div></div>`}
+function Onboarding(){const any=S.connected.instagram||S.connected.youtube;
+  return`<div style="min-height:100vh;background:var(--bg)"><div class="ob"><a class="brand" href="#/" style="color:var(--ink);padding:0 0 28px">${LOGO}Nexlytics</a><div class="stepper"><span class="on"></span><span class="${any?"on":""}"></span><span></span></div>
+  <h1 style="font-size:30px;letter-spacing:-.03em">Welcome${S.user.name?", "+esc(S.user.name):""}</h1><p class="muted" style="font-size:16px;margin:8px 0 28px">Connect your social accounts to start analyzing your performance.</p>
+  ${["instagram","youtube"].map(p=>{const c=S.connected[p],pr=DataService.profile(p);return`<div class="card" style="margin-bottom:14px"><div class="acc">${pIcon(p,48)}<div class="meta">${c?`<b>${p==="instagram"?(pr.handle?"@"+esc(pr.handle):"Instagram"):esc(pr.name)}</b><div class="muted" style="font-size:13px">${p==="instagram"&&isLiveIG()&&pr.followers==null?"Loading details on your dashboard":p==="instagram"?fmt(pr.followers)+" followers":fmt(pr.subscribers)+" subscribers"}</div><span class="stat-ok">Connected</span>`:`<b>${P_NAME[p]}</b><div class="muted" style="font-size:13px">${p==="instagram"?"Business or Creator account required":"Any channel you manage"}</div>`}</div>${c?`<button class="btn btn-sm btn-danger" data-act="disconnect" data-v="${p}">Disconnect</button>`:`<button class="btn btn-p" data-act="connect" data-v="${p}">Connect ${P_NAME[p]}</button>`}</div></div>`}).join("")}
+  <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;align-items:center"><a class="btn btn-p btn-lg ${any?"":"no"}" href="#/app/dashboard" ${any?"":'aria-disabled="true" style="opacity:.45;pointer-events:none"'}>Continue to dashboard</a><span class="muted" style="font-size:13px">You can connect one or both, and add the other later.</span></div></div></div>`}
+
+/* ================= modals ================= */
+function openModal(html,wide){document.getElementById("modal").innerHTML=`<div class="mbg" data-act="bgclose"><div class="modal ${wide?"wide":""}" role="dialog" aria-modal="true">${html}</div></div>`;const f=document.querySelector(".modal button, .modal input");f&&f.focus()}
+function closeModal(){document.getElementById("modal").innerHTML=""}
+const UPG={growth:"See day-by-day followers, reach and engagement.",audience:"Know who your audience is and when they’re online.",history:"Go back up to 12 months instead of 28 days.",competitors:"See how you compare with creators in your niche.",reports:"Export polished PDF and CSV reports.",coach:"Get clear next steps from your own data.",ideas:"Never run out of ideas that fit your account.",caption:"You’ve used your 3 free AI captions this month.",account:"Connect more than one account per platform."};
+function upgradeModal(reason){openModal(`<button class="x" data-act="close" aria-label="Close">${I("x")}</button><div class="mic t-violet" style="margin-bottom:14px">${I("crown",22)}</div><h2>Unlock deeper insights</h2><p class="muted">${UPG[reason]||"See exactly what is driving your growth."}</p><ul class="checks">${["Advanced analytics & 12-month history","AI Coach","Competitor analysis","Content ideas","PDF & CSV reports"].map(x=>`<li><span class="ck">${I("check",13)}</span>${x}</li>`).join("")}</ul><button class="btn btn-p btn-lg" style="width:100%" data-act="checkout">Upgrade to Pro · ${PRICES[S.currency].sym}${PRICES[S.currency].m}/month</button><button class="btn btn-ghost" style="width:100%;margin-top:8px" data-act="close">Maybe later</button>`)}
+function checkoutModal(){const P=PRICES[S.currency];const y=S.cycle==="yearly";const price=y?P.y:P.m;
+  openModal(`<button class="x" data-act="close" aria-label="Close">${I("x")}</button><h2>Start your Pro trial</h2><p class="muted">7 days free, then ${P.sym}${price} per ${y?"year":"month"}. Cancel anytime.</p>
+  <div style="margin:18px 0"><div class="seg" style="margin-bottom:10px"><button class="${y?"":"on"}" data-act="cycle" data-v="monthly" data-m="1">Monthly</button><button class="${y?"on":""}" data-act="cycle" data-v="yearly" data-m="1">Yearly</button></div> <div class="seg">${Object.keys(PRICES).map(c=>`<button class="${S.currency===c?"on":""}" data-act="currency" data-v="${c}" data-m="1">${c}</button>`).join("")}</div></div>
+  <div class="box" style="white-space:normal"><div style="display:flex;justify-content:space-between"><span>Nexlytics Pro ${y?"Yearly":"Monthly"}</span><b>${P.sym}${price.toFixed(2)}</b></div><div style="display:flex;justify-content:space-between" class="muted"><span>Due today</span><span>${P.sym}0.00</span></div></div>
+  <p class="muted" style="font-size:12px;margin:12px 0 18px">Demo checkout: no payment is taken. In production this opens Stripe Checkout, and Pro is unlocked only after Stripe confirms the subscription by webhook.</p>
+  <button class="btn btn-p btn-lg" style="width:100%" data-act="confirmcheckout">Start free trial</button>`)}
+function oauthModal(p){const ig=p==="instagram";openModal(`<button class="x" data-act="close" aria-label="Close">${I("x")}</button><div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">${pIcon(p,40)}<span class="muted">→</span><span class="avatar" style="border-radius:12px;background:var(--v)">${I("trend",18)}</span></div><h2>Connect ${P_NAME[p]}</h2><p class="muted">You’ll sign in with ${ig?"Instagram":"Google"} and approve read-only access.</p>
+  <ul class="checks">${(ig?["Read your profile and follower count","Read insights for your posts, Reels and Stories","Read audience demographics (100+ followers)"]:["Read your channel details","Read YouTube Analytics reports","Read your video list"]).map(x=>`<li><span class="ck">${I("check",13)}</span>${x}</li>`).join("")}</ul>
+  <p class="muted" style="font-size:12px;margin-bottom:16px">Demo mode: this simulates the OAuth flow and connects a sample account. With credentials configured, this button redirects to ${ig?"Instagram":"Google"} sign-in.</p><button class="btn btn-p btn-lg" style="width:100%" data-act="doconnect" data-v="${p}">Continue</button>`)}
+
+/* ================= router ================= */
+function render(){CH={};chN=0;validPlatform();const hh=(location.hash||"#/").slice(1);const [h,hq]=hh.split("?");if(hq)handleHashQuery(hq,h);const parts=h.split("/").filter(Boolean);const root=document.getElementById("root");let html="",title="Nexlytics";
+  if(!parts.length){html=asDemo(Landing)}
+  else if(parts[0]==="blog"){html=Blog(parts[1]);title=parts[1]?(ARTICLES.find(a=>a.slug===parts[1])||{}).title||"Blog":"Blog"}
+  else if(parts[0]==="signup"||parts[0]==="login"){html=Auth(parts[0]);title=parts[0]==="signup"?"Create account":"Sign in"}
+  else if(parts[0]==="onboarding"){if(!S.authed){location.hash="#/signup";return}html=Onboarding();title="Connect accounts"}
+  else if(parts[0]==="admin"){html=Admin();title="Admin"}
+  else if(parts[0]==="app"){if(!S.authed){location.hash="#/signup";return}if(!S.connected.instagram&&!S.connected.youtube){location.hash="#/onboarding";return}
+    const pg=parts[1]||"dashboard";const map={dashboard:()=>S.platform==="all"?DashAll():S.platform==="youtube"?DashYT():DashIG(),analytics:Analytics,content:Content,audience:Audience,coach:Coach,caption:Caption,competitors:Competitors,reports:Reports,ideas:Ideas,saved:Saved,settings:Settings};
+    let body;if(isLiveIG()&&LIVE.err)body=ErrorState(LIVE.err);else if(isLiveIG()&&needIG())body=`<div class="card">${Loading()}</div>`;else body=(map[pg]||map.dashboard)();
+    html=Shell(pg,body);title=(NAV.find(n=>n[0]===pg)||NAV[0])[1]}
+  else html=asDemo(Landing);
+  root.innerHTML=html;document.title=title+(title==="Nexlytics"?" — Instagram & YouTube analytics with AI insights":" · Nexlytics");
+}
+function handleHashQuery(q,path){const p=new URLSearchParams(q);const err=p.get("ig_error");
+  if(p.get("ig")==="connected")setTimeout(()=>toast("Instagram connected. Loading your data…"),50);
+  if(err){const M={not_configured:"Instagram isn’t configured on the server yet.",access_denied:"Instagram access was cancelled.",user_denied:"Instagram access was cancelled.",state_mismatch:"Sign-in expired. Try connecting again.",token_exchange:"Instagram didn’t accept the sign-in. Check the app ID, secret and redirect URI.",missing_code:"Instagram didn’t return a sign-in code. Try again."};setTimeout(()=>toast(M[err]||("Couldn’t connect Instagram ("+err+").")),50)}
+  try{history.replaceState(null,"","#"+path)}catch(e){}lastHash="#"+path}
+let lastHash=location.hash;
+window.addEventListener("hashchange",()=>{ui.dd=null;ui.sideOpen=false;if(location.hash!==lastHash){lastHash=location.hash;render();window.scrollTo(0,0)}});
+
+/* ================= actions ================= */
+function rerender(){const y=window.scrollY;render();window.scrollTo(0,y)}
+document.addEventListener("change",e=>{const t=e.target;if(t.dataset.actChange==="substatus"){S.subStatus=t.value;save();toast("Subscription state: "+t.value.replace("_"," "));rerender()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(document.getElementById("modal").innerHTML)closeModal();else if(ui.dd){ui.dd=null;rerender()}}});
+document.addEventListener("click",e=>{
+  const sc=e.target.closest("[data-scroll]");if(sc){e.preventDefault();const go=()=>{const el=document.getElementById(sc.dataset.scroll);el&&el.scrollIntoView({behavior:"smooth"})};if(location.hash.length>2){location.hash="#/";setTimeout(go,50)}else go();return}
+  const t=e.target.closest("[data-act]");
+  if(!t){if(ui.dd&&!e.target.closest(".ddm")){ui.dd=null;rerender()}return}
+  const a=t.dataset.act,v=t.dataset.v;
+  if(a==="bgclose"){if(e.target===t)closeModal();return}
+  if(t.tagName==="BUTTON"||a!=="settab")e.preventDefault&&t.tagName==="BUTTON"&&e.preventDefault();
+  switch(a){
+    case"dd":ui.dd=ui.dd===v?null:v;if(v==="notif"){S.notifRead=true;save()}rerender();break;
+    case"side":ui.sideOpen=!ui.sideOpen;rerender();break;
+    case"plat":S.platform=v;ui.dd=null;save();if(!location.hash.includes("/app/dashboard"))location.hash="#/app/dashboard";else rerender();break;
+    case"range":S.range=+v;ui.dd=null;save();rerender();break;
+    case"upgrade":ui.dd=null;rerender();upgradeModal(v);break;
+    case"checkout":checkoutModal();break;
+    case"confirmcheckout":S.subStatus="trial";save();closeModal();toast("Pro trial started. All features unlocked.");rerender();break;
+    case"cycle":S.cycle=v;save();if(t.dataset.m)checkoutModal();else rerender();break;
+    case"currency":S.currency=v;save();if(t.dataset.m)checkoutModal();else rerender();break;
+    case"switchcycle":S.cycle=S.cycle==="monthly"?"yearly":"monthly";save();toast("Switched to "+S.cycle+" billing from your next renewal.");rerender();break;
+    case"cancel":openModal(`<h2>Cancel Pro?</h2><p class="muted" style="margin-bottom:18px">You’ll keep Pro until the end of this billing period. After that, AI Coach, competitor tracking, reports and history beyond 28 days will lock. Your data stays.</p><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn" data-act="close">Keep Pro</button><button class="btn btn-danger" data-act="confirmcancel">Cancel subscription</button></div>`);break;
+    case"confirmcancel":S.subStatus="cancelled";save();closeModal();toast("Subscription cancelled.");rerender();break;
+    case"portal":toast("In production this opens the Stripe billing portal.");break;
+    case"preview":S.subStatus=v==="pro"?"active":"free";save();rerender();break;
+    case"close":closeModal();break;
+    case"connect":ui.dd=null;
+      if(LIVE.configured&&!S.demoMode){if(v==="instagram"){location.href="/api/oauth/instagram/start";break}
+        openModal(`<button class="x" data-act="close" aria-label="Close">${I("x")}</button><div class="mic t-red" style="margin-bottom:14px">${I("yt",22)}</div><h2>YouTube is coming next</h2><p class="muted" style="margin-bottom:18px">Live Instagram is ready. The YouTube connection is the next phase. You can explore the YouTube dashboard in the demo meanwhile.</p><button class="btn btn-p" style="width:100%" data-act="close">OK</button>`);break}
+      if(S.connected[v]&&!isPro()){upgradeModal("account");break}oauthModal(v);break;
+    case"doconnect":S.connected[v]=true;if(both()&&S.platform!=="all")S.platform="all";else S.platform=v;save();closeModal();toast(P_NAME[v]+" connected.");rerender();break;
+    case"disconnect":openModal(`<h2>Disconnect ${P_NAME[v]}?</h2><p class="muted" style="margin-bottom:18px">Nexlytics will stop syncing this account and delete its access token. Past reports you exported aren’t affected.</p><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn" data-act="close">Keep connected</button><button class="btn btn-danger" data-act="dodisconnect" data-v="${v}">Disconnect</button></div>`);break;
+    case"dodisconnect":if(v==="instagram"&&isLiveIG()){closeModal();api("/api/instagram/disconnect",{method:"POST"}).then(()=>{S.liveIG=false;S.connected.instagram=false;resetLive();save();toast("Instagram disconnected. Your token was deleted.");if(!S.connected.youtube)location.hash="#/onboarding";else rerender()}).catch(e=>toast("Couldn’t disconnect: "+e.message));break}
+      S.connected[v]=false;save();closeModal();toast(P_NAME[v]+" disconnected.");if(!S.connected.instagram&&!S.connected.youtube)location.hash="#/onboarding";else rerender();break;
+    case"reconnect":if(v==="instagram"&&LIVE.configured&&!S.demoMode){location.href="/api/oauth/instagram/start";break}oauthModal(v);break;
+    case"retry":LIVE.err=null;rerender();break;
+    case"exitdemo":S.demoMode=false;S.connected={instagram:S.liveIG,youtube:false};resetLive();save();location.hash=S.liveIG?"#/app/dashboard":"#/onboarding";if(location.hash===lastHash)rerender();break;
+    case"ctab":ui[t.dataset.k]=v;rerender();break;
+    case"cplat":ui.cPlat=v;if(t.tagName==="BUTTON")rerender();break;
+    case"antab":ui.anTab=v;rerender();break;
+    case"settab":ui.setTab=v;ui.dd=null;if(location.hash==="#/app/settings")rerender();break;
+    case"sort":if(!isPro()){upgradeModal("growth");break}ui.sortDir=ui.sort===v?-ui.sortDir:-1;ui.sort=v;rerender();break;
+    case"caption":{const txt=document.getElementById("cap").value.trim();if(txt.length<10){toast("Paste a caption of at least 10 characters.");break}if(!isPro()&&S.aiUsed>=LIMITS.free.aiGenerationsPerMonth){upgradeModal("caption");break}
+      ui.captionText=txt;const r=analyzeCaption(txt,document.getElementById("tone").value);r.original=txt;ui.caption=r;if(!isPro()){S.aiUsed++;save()}rerender();break}
+    case"copy":{const el=document.getElementById(v);navigator.clipboard&&navigator.clipboard.writeText(el.textContent).then(()=>toast("Copied."),()=>toast("Couldn’t copy. Select the text instead."));break}
+    case"niche":ui.niche=v;ui.ideas=null;rerender();break;
+    case"saveidea":{const d=(ui.ideas||genIdeas(ui.niche))[+v];if(!S.saved.find(x=>x.hook===d.hook)){S.saved.unshift(d);save();toast("Saved.")}else toast("Already saved.");break}
+    case"unsave":S.saved.splice(+v,1);save();rerender();break;
+    case"addcomp":{const h=document.getElementById("chandle").value.trim();const p=document.getElementById("cplat").value;if(!/^@?[A-Za-z0-9._ ]{2,40}$/.test(h)){toast("Enter a valid username or channel name.");break}if(S.competitors.length>=LIMITS.pro.competitors){toast("You can track up to 2 competitors. Remove one first.");break}const hh=p==="instagram"?"@"+h.replace(/^@/,""):h;if(S.competitors.find(c=>c.handle.toLowerCase()===hh.toLowerCase())){toast("Already added.");break}S.competitors.push({handle:hh,platform:p});save();rerender();break}
+    case"rmcomp":S.competitors=S.competitors.filter(c=>c.handle!==v);save();rerender();break;
+    case"regen":if(isLiveIG()){resetLive();rerender()}toast("Insights refreshed from the latest sync.");break;
+    case"csv":{const csv=reportData().map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");navigator.clipboard&&navigator.clipboard.writeText(csv).then(()=>toast("CSV copied. Paste it into Excel or Sheets."),()=>toast("Couldn’t access the clipboard."));break}
+    case"print":try{window.print()}catch(err){toast("Printing isn’t available here. Use your browser’s print menu.")}break;
+    case"saveprofile":{const n=document.getElementById("pn").value.trim(),em=document.getElementById("pe").value.trim(),r=document.getElementById("pr").value;if(!n){toast("Enter your name.");break}if(!/^\S+@\S+\.\S+$/.test(em)){toast("Enter a valid email address.");break}S.user={name:n,email:em};S.region=r;S.currency=REGIONS.find(x=>x[0]===r)[2];save();toast("Changes saved.");rerender();break}
+    case"theme":if(v==="system")delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=v;store.set("theme",v);rerender();break;
+    case"auth":{if(v==="email"){const em=document.getElementById("ae").value.trim(),pw=document.getElementById("ap").value,nm=document.getElementById("an");const err=document.getElementById("aerr");if(!/^\S+@\S+\.\S+$/.test(em)){err.textContent="Enter a valid email address.";break}if(pw.length<8){err.textContent="Password must be at least 8 characters.";break}S.user={name:(nm&&nm.value.trim())||S.user.name,email:em}}S.authed=true;save();location.hash=(S.connected.instagram||S.connected.youtube)?"#/app/dashboard":"#/onboarding";break}
+    case"logout":S.authed=false;ui.dd=null;save();location.hash="#/";break;
+    case"demo":e.preventDefault();Object.assign(S,{authed:true,demoMode:true,connected:{instagram:true,youtube:true},platform:"instagram",subStatus:"free",range:28});save();location.hash="#/app/dashboard";toast("Demo account loaded. Use Preview as Free / Pro to compare.");break;
+  }
+});
+(function(){const th=store.get("theme","system");if(th!=="system")document.documentElement.dataset.theme=th})();
+async function boot(){
+  try{const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),5000);const st=await api("/api/instagram/status",{signal:ctl.signal});clearTimeout(to);
+    LIVE.available=true;LIVE.configured=!!st.configured;
+    if(!S.demoMode&&!S.liveIG&&(S.connected.instagram||S.connected.youtube))S.demoMode=true; // older sessions were demo
+    if(st.connected){S.liveIG=true;S.authed=true;if(!S.demoMode)S.connected={instagram:true,youtube:false}}
+    else{if(S.liveIG&&!S.demoMode)S.connected.instagram=false;S.liveIG=false}
+    save()}catch(e){LIVE.available=false}
+  render()}
+boot();
+</script>
+</body>
+</html>
