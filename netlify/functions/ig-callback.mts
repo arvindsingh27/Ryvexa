@@ -1,5 +1,5 @@
 import type { Config } from "@netlify/functions";
-import { cfg, cookies, setCookie, redirect, saveSession, newSid, validSid } from "../lib/ig.mts";
+import { cfg, cookies, setCookie, redirect, saveSession, newSid, validSid, graphBase } from "../lib/ig.mts";
 
 // Step 2 of OAuth: verify state, exchange the code for a long-lived token, store it encrypted.
 export default async (req: Request) => {
@@ -35,31 +35,41 @@ export default async (req: Request) => {
     return fail(`Instagram says: ${String(why).slice(0, 160)}`);
   }
 
-  // long-lived token (60 days)
-  const lu = new URL("https://graph.instagram.com/access_token");
-  lu.searchParams.set("grant_type", "ig_exchange_token");
-  lu.searchParams.set("client_secret", c.secret);
-  lu.searchParams.set("access_token", first.access_token);
-  const lr = await fetch(lu);
-  const lj: any = await lr.json().catch(() => ({}));
-  if (!lr.ok || !lj.access_token) {
-    const why = lj?.error?.message || lj?.error_message || `HTTP ${lr.status}`;
-    console.error("Long-lived exchange failed", lr.status, why);
-    return fail(`Long-lived token step: ${String(why).slice(0, 140)}`);
+  // long-lived token (60 days). Try the documented unversioned endpoint, then the versioned one.
+  // If both fail, keep the short-lived token (about 1 hour) so the user can still connect.
+  let token = first.access_token as string;
+  let expiresIn = Number(first.expires_in) || 3600;
+  let longLived = false;
+  let lastWhy = "";
+  for (const base of ["https://graph.instagram.com", graphBase()]) {
+    const lu = new URL(base + "/access_token");
+    lu.searchParams.set("grant_type", "ig_exchange_token");
+    lu.searchParams.set("client_secret", c.secret);
+    lu.searchParams.set("access_token", first.access_token);
+    const lr = await fetch(lu);
+    const lj: any = await lr.json().catch(() => ({}));
+    if (lr.ok && lj.access_token) {
+      token = lj.access_token;
+      expiresIn = Number(lj.expires_in) || 5184000;
+      longLived = true;
+      break;
+    }
+    lastWhy = lj?.error?.message || lj?.error_message || `HTTP ${lr.status}`;
+    console.error("Long-lived exchange failed", base, lr.status, lastWhy);
   }
 
   const existing = cookies(req).nx_sid;
   const sid = validSid(existing) ? existing : newSid();
   await saveSession({
     sid,
-    token: lj.access_token,
+    token,
     userId: String(first.user_id || ""),
-    expiresAt: Date.now() + (lj.expires_in || 5184000) * 1000,
+    expiresAt: Date.now() + expiresIn * 1000,
     refreshedAt: Date.now(),
     permissions: typeof first.permissions === "string" ? first.permissions.split(",") : first.permissions,
   });
 
-  return redirect("/#/app/dashboard?ig=connected", [clearState, setCookie("nx_sid", sid, 60 * 864e2)]);
+  return redirect(`/#/app/dashboard?ig=${longLived ? "connected" : "connected_short"}`, [clearState, setCookie("nx_sid", sid, 60 * 864e2)]);
 };
 
 export const config: Config = { path: "/api/oauth/instagram/callback" };
