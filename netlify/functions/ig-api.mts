@@ -1,6 +1,6 @@
 import type { Config } from "@netlify/functions";
 import {
-  cfg, json, setCookie, loadSession, saveSession, ensureFresh, graph, GraphError, cached, tokenStore, cacheStore, type Session,
+  cfg, json, setCookie, loadSession, saveSession, ensureFresh, graph, rawGraph, graphBase, GraphError, cached, tokenStore, cacheStore, type Session,
 } from "../lib/ig.mts";
 
 const DAY = 864e5;
@@ -171,6 +171,25 @@ export default async (req: Request) => {
 
   const s = await loadSession(req);
   if (!s) return json({ error: "NOT_CONNECTED", message: "Connect Instagram to continue." }, 401);
+
+  if (resource === "debug") {
+    // Safe diagnostics: never returns the token or secret.
+    const t = s.token || "";
+    const probe = async (base: string) => {
+      try {
+        const { r, j } = await rawGraph(base, "/me", t, { fields: "user_id,username,account_type" });
+        return { status: r.status, ok: r.ok && !j.error, username: j.username ?? null, accountType: j.account_type ?? null,
+          error: j.error ? { code: j.error.code, subcode: j.error.error_subcode ?? null, type: j.error.type ?? null, message: j.error.message } : null };
+      } catch (e: any) { return { error: String(e?.message || e) }; }
+    };
+    return json({
+      appIdLast4: c.id.slice(-4), redirectUri: c.redirect,
+      token: { prefix: t.slice(0, 4), length: t.length, expiresInHours: Math.round((s.expiresAt - Date.now()) / 36e5) },
+      permissions: s.permissions ?? null,
+      versioned: { base: graphBase(), ...(await probe(graphBase())) },
+      unversioned: await probe("https://graph.instagram.com"),
+    });
+  }
 
   if (resource === "disconnect") {
     if (req.method !== "POST") return json({ error: "METHOD_NOT_ALLOWED" }, 405);
