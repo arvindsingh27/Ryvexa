@@ -10,6 +10,7 @@ export function cfg() {
   return { id, secret, redirect, ok: Boolean(id && secret && redirect) };
 }
 
+export { rawGraph };
 export function graphBase() {
   return `https://graph.instagram.com/${Netlify.env.get("IG_GRAPH_VERSION") || "v23.0"}`;
 }
@@ -41,6 +42,7 @@ export interface Session {
   sid: string;
   token: string;
   userId: string;
+  igAccountId?: string;
   expiresAt: number;
   refreshedAt: number;
   permissions?: string[];
@@ -94,12 +96,20 @@ export class GraphError extends Error {
     super(message);
   }
 }
-export async function graph(path: string, token: string, params: Record<string, string | number> = {}) {
-  const u = new URL(graphBase() + path);
+async function rawGraph(base: string, path: string, token: string, params: Record<string, string | number>) {
+  const u = new URL(base + path);
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, String(v));
   u.searchParams.set("access_token", token);
   const r = await fetch(u);
   const j: any = await r.json().catch(() => ({}));
+  return { r, j };
+}
+export async function graph(path: string, token: string, params: Record<string, string | number> = {}) {
+  let { r, j } = await rawGraph(graphBase(), path, token, params);
+  // Some tokens are rejected on the versioned host with "Unsupported request"; retry unversioned.
+  if ((!r.ok || j.error) && /unsupported request/i.test(j?.error?.message || "")) {
+    ({ r, j } = await rawGraph("https://graph.instagram.com", path, token, params));
+  }
   if (!r.ok || j.error) {
     const e = j.error || {};
     const c: number | undefined = e.code;
