@@ -30,8 +30,9 @@ export default async (req: Request) => {
   const j: any = await r.json().catch(() => ({}));
   const first = Array.isArray(j.data) ? j.data[0] : j;
   if (!r.ok || !first?.access_token) {
-    console.error("Token exchange failed", r.status, j?.error_message || j?.error?.message);
-    return fail("token_exchange");
+    const why = j?.error_message || j?.error?.message || `HTTP ${r.status}`;
+    console.error("Token exchange failed", r.status, why);
+    return fail(`Instagram says: ${String(why).slice(0, 160)}`);
   }
 
   // long-lived token (60 days)
@@ -42,8 +43,9 @@ export default async (req: Request) => {
   const lr = await fetch(lu);
   const lj: any = await lr.json().catch(() => ({}));
   if (!lr.ok || !lj.access_token) {
-    console.error("Long-lived exchange failed", lr.status, lj?.error?.message);
-    return fail("token_exchange");
+    const why = lj?.error?.message || lj?.error_message || `HTTP ${lr.status}`;
+    console.error("Long-lived exchange failed", lr.status, why);
+    return fail(`Long-lived token step: ${String(why).slice(0, 140)}`);
   }
 
   const existing = cookies(req).nx_sid;
